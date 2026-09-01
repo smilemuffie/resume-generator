@@ -22,7 +22,7 @@ export function render(r: Resume, lang: Lang): string {
     ${contact.length ? `<div class="min-contact">${contact.join('<span class="min-sep">·</span>')}</div>` : ''}
   </header>`;
 
-  if (b.summary) h += minSection(L.summary, `<p class="min-summary">${esc(b.summary)}</p>`);
+  if (b.summary) h += minSection(L.summary, `<p class="min-summary">${b.summary}</p>`);
 
   if ((r.certificates || []).length) {
     h += minSection(L.certificates, `<div class="min-chips">${r.certificates.map((c) => chip(c.name, 'plain')).join('')}</div>`);
@@ -64,7 +64,7 @@ function minItem(title: string, date: string, summary: string, highlights: strin
   const rolesHtml = roles.length ? `<span class="min-item-roles">${roles.map((rl) => chip(rl, 'plain')).join('')}</span>` : '';
   return `<div class="min-item">
     <div class="min-item-head"><span class="min-item-title">${title}</span>${rolesHtml}${date ? `<span class="min-item-date">${esc(date)}</span>` : ''}</div>
-    ${summary ? `<p class="min-item-summary">${esc(summary)}</p>` : ''}
+    ${summary ? `<p class="min-item-summary">${summary}</p>` : ''}
     ${highlights.length ? `<ul class="min-highlights">${listItems(highlights)}</ul>` : ''}
   </div>`;
 }

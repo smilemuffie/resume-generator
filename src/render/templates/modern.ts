@@ -45,7 +45,7 @@ export function render(r: Resume, lang: Lang): string {
 
   // 主体
   let main = '';
-  if (b.summary) main += `<section class="mod-block"><h2 class="mod-title">${icon('sparkles')}<span>${esc(L.summary)}</span></h2><p class="mod-summary">${esc(b.summary)}</p></section>`;
+  if (b.summary) main += `<section class="mod-block"><h2 class="mod-title">${icon('sparkles')}<span>${esc(L.summary)}</span></h2><p class="mod-summary">${b.summary}</p></section>`;
 
   if ((r.work || []).length) {
     main += modSection(L.work, 'briefcase', r.work.map((w) => modItem(esc(w.company), dateRange(w.startDate, w.endDate), w.summary, w.highlights, w.position ? [w.position] : [])).join(''));
@@ -81,7 +81,7 @@ function modItem(title: string, date: string, summary: string, highlights: strin
   const rolesHtml = roles.length ? `<span class="mod-item-roles">${roles.map((rl) => chip(rl, 'accent')).join('')}</span>` : '';
   return `<div class="mod-item">
     <div class="mod-item-head"><span class="mod-item-title">${title}</span>${rolesHtml}${date ? `<span class="mod-item-date pill">${esc(date)}</span>` : ''}</div>
-    ${summary ? `<p class="mod-item-summary">${esc(summary)}</p>` : ''}
+    ${summary ? `<p class="mod-item-summary">${summary}</p>` : ''}
     ${highlights.length ? `<ul class="mod-highlights">${listItems(highlights)}</ul>` : ''}
   </div>`;
 }

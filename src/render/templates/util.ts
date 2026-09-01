@@ -16,10 +16,11 @@ export function dateRange(start = '', end = ''): string {
 }
 
 // 列表项（使用默认 <li>，符号由 CSS ::before 绘制）
+// 支持 HTML：内容原样输出，可写 <b>/<a>/<br> 等标签，也可纯文本
 export function listItems(items: string[] = []): string {
   return (items || [])
     .filter((i) => i && String(i).trim())
-    .map((i) => `<li>${esc(i)}</li>`)
+    .map((i) => `<li>${i}</li>`)
     .join('');
 }
 

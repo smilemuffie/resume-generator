@@ -62,3 +62,11 @@ export function loadResumeIntoEditor(resume: Resume): void {
 export function getEditorText(): string {
   return view ? view.state.doc.toString() : '';
 }
+
+// 清空编辑器（置为空对象）
+export function clearEditor(): void {
+  if (!view) return;
+  view.dispatch({
+    changes: { from: 0, to: view.state.doc.length, insert: '{}' }
+  });
+}

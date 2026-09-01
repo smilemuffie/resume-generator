@@ -12,7 +12,7 @@ import {
   subscribe
 } from './store';
 import { THEME_COLORS } from './theme';
-import { getEditorText, initEditor } from './editor/json-editor';
+import { clearEditor, getEditorText, initEditor } from './editor/json-editor';
 import { initRenderer } from './render/renderer';
 import { initExport } from './export/print';
 import type { Lang, TemplateId } from './types';
@@ -72,6 +72,33 @@ function bootstrap(): void {
           toastTimer = window.setTimeout(() => toastEl.classList.remove('is-visible'), 1600);
         }
       }
+    });
+  }
+
+  // 清空编辑器（二次确认弹窗）
+  const clearBtn = document.querySelector<HTMLButtonElement>('#clear-btn');
+  const clearModal = document.querySelector<HTMLElement>('#clear-modal');
+  const clearConfirm = document.querySelector<HTMLButtonElement>('#clear-confirm');
+  const clearCancel = document.querySelector<HTMLButtonElement>('#clear-cancel');
+  const hideClearModal = () => clearModal?.classList.remove('is-visible');
+  if (clearBtn && clearModal) {
+    clearBtn.addEventListener('click', () => clearModal.classList.add('is-visible'));
+    clearCancel?.addEventListener('click', hideClearModal);
+    clearModal.addEventListener('click', (e) => {
+      if (e.target === clearModal) hideClearModal();
+    });
+    clearConfirm?.addEventListener('click', () => {
+      clearEditor();
+      hideClearModal();
+      if (toastEl) {
+        toastEl.textContent = '已清空';
+        toastEl.classList.add('is-visible');
+        if (toastTimer) window.clearTimeout(toastTimer);
+        toastTimer = window.setTimeout(() => toastEl.classList.remove('is-visible'), 1600);
+      }
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && clearModal.classList.contains('is-visible')) hideClearModal();
     });
   }
 

@@ -26,7 +26,7 @@ export function render(r: Resume, lang: Lang): string {
     ${profiles ? `<div class="r-contact">${profiles}</div>` : ''}
   </header>`;
 
-  if (b.summary) h += `<p class="r-summary">${esc(b.summary)}</p>`;
+  if (b.summary) h += `<p class="r-summary">${b.summary}</p>`;
 
   if ((r.work || []).length) {
     h += section(L.work, 'briefcase', r.work.map((w) => item(
@@ -112,7 +112,7 @@ function item(title: string, date: string, summary: string, highlights: string[]
       ${rolesHtml}
       ${date ? `<span class="r-item-date">${esc(date)}</span>` : ''}
     </div>
-    ${summary ? `<p class="r-item-summary">${esc(summary)}</p>` : ''}
+    ${summary ? `<p class="r-item-summary">${summary}</p>` : ''}
     ${highlights.length ? `<ul class="r-highlights">${listItems(highlights)}</ul>` : ''}
   </div>`;
 }

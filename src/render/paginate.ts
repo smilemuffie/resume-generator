@@ -38,42 +38,122 @@ export function paginate(templateHtml: string, tid: TemplateId): string[] {
   return pages.length ? pages : [templateHtml];
 }
 
-// 单栏模板（basic / minimal）：按 .tpl 顶层子块切分
+// 单栏模板（basic / minimal）：按 .tpl 顶层子块切分；
+// 当单个 section 过高时，进一步按其内部 item 切分，跨页重复区块标题。
 function paginateSingleColumn(host: HTMLElement, templateHtml: string, tid: TemplateId): string[] {
   const tmp = document.createElement('div');
   tmp.innerHTML = templateHtml;
   const srcRoot = tmp.querySelector<HTMLElement>('.tpl');
   if (!srcRoot) return [templateHtml];
-  const blocks = Array.from(srcRoot.children).map((el) => el.cloneNode(true) as HTMLElement);
-  if (!blocks.length) return [templateHtml];
 
-  // 测量根：与真实页面同宽、同 padding，box-sizing: border-box
+  // 测量根：与真实页面同宽、同 padding（border-box），测量高度含页内边距
   const root = document.createElement('div');
   root.className = tplClass(tid);
   root.style.width = PAGE_WIDTH_PX + 'px';
   host.appendChild(root);
 
+  // 第一遍：将过高的 section 按 item 拆分为多个 chunk-section unit
+  const units: HTMLElement[] = [];
+  for (const block of Array.from(srcRoot.children)) {
+    const el = block as HTMLElement;
+    root.innerHTML = '';
+    root.appendChild(el);
+    if (root.scrollHeight <= SAFE_TARGET_PX) {
+      units.push(el);
+    } else {
+      units.push(...splitSectionIntoChunks(el, root));
+    }
+  }
+
+  // 第二遍：把 unit 依次装入页面，超出则换页
   const pages: HTMLElement[][] = [];
   let current: HTMLElement[] = [];
-
-  root.innerHTML = '';
-  for (const block of blocks) {
-    root.appendChild(block);
-    if (root.scrollHeight > SAFE_TARGET_PX && current.length) {
+  for (const unit of units) {
+    current.push(unit);
+    root.innerHTML = '';
+    current.forEach((e) => root.appendChild(e));
+    if (root.scrollHeight > SAFE_TARGET_PX && current.length > 1) {
+      current.pop();
       pages.push(current);
-      root.innerHTML = '';
-      root.appendChild(block);
-      current = [block];
-    } else {
-      current.push(block);
+      current = [unit];
     }
   }
   if (current.length) pages.push(current);
 
+  root.innerHTML = '';
   return pages.map((arr) => {
-    const inner = arr.map((el) => el.outerHTML).join('');
+    const inner = arr.map((e) => e.outerHTML).join('');
     return `<div class="${tplClass(tid)}">${inner}</div>`;
   });
+}
+
+// 将过高的 section 按其子项拆分；区块标题（首个子元素）仅在首个 chunk 出现一次。
+function splitSectionIntoChunks(section: HTMLElement, root: HTMLElement): HTMLElement[] {
+  const children = Array.from(section.children);
+  if (children.length <= 1) return [section];
+
+  const titleSrc = children[0];
+  const items = children.slice(1);
+
+  // 探针 section：同 class，放进 root(.tpl) 测量，含真实 padding/margin
+  const probe = document.createElement(section.tagName);
+  probe.className = section.className;
+  root.innerHTML = '';
+  root.appendChild(probe);
+
+  const chunks: HTMLElement[] = [];
+  let cur: HTMLElement[] = [];
+  let hasTitle = false; // 当前 chunk 是否含区块标题
+
+  // 开启新 chunk；首个 chunk 带标题（仅展示一次），后续不带
+  const startChunk = (withTitle: boolean) => {
+    cur = [];
+    probe.innerHTML = '';
+    if (withTitle) {
+      const t = titleSrc.cloneNode(true) as HTMLElement;
+      cur.push(t);
+      probe.appendChild(t);
+    }
+    hasTitle = withTitle;
+  };
+
+  startChunk(true);
+
+  for (const item of items) {
+    const itemClone = item.cloneNode(true) as HTMLElement;
+    probe.appendChild(itemClone);
+    cur.push(itemClone);
+    if (root.scrollHeight > SAFE_TARGET_PX) {
+      // 除当前 item 外，是否仍有有意义内容可单独成页（避免只剩空标题）
+      const keepAfterPop = hasTitle ? cur.length > 2 : cur.length > 1;
+      if (keepAfterPop) {
+        cur.pop();
+        probe.removeChild(itemClone);
+        chunks.push(buildSection(section, cur));
+        startChunk(false);
+        probe.appendChild(itemClone);
+        cur.push(itemClone);
+      } else {
+        // 当前 item 单独即超页：作为独立 chunk（首个 chunk 保留其标题）
+        chunks.push(buildSection(section, cur));
+        startChunk(false);
+      }
+    }
+  }
+  // 收尾：有内容才推（含标题但无 item 不推，避免空标题块）
+  const shouldPush = hasTitle ? cur.length > 1 : cur.length > 0;
+  if (shouldPush) chunks.push(buildSection(section, cur));
+
+  root.innerHTML = '';
+  return chunks.length ? chunks : [section];
+}
+
+// 用原 section 的标签与 class 构造一个 chunk section，并把给定子元素移入
+function buildSection(srcSection: HTMLElement, children: HTMLElement[]): HTMLElement {
+  const sec = document.createElement(srcSection.tagName);
+  sec.className = srcSection.className;
+  sec.append(...children);
+  return sec;
 }
 
 // 现代模板：侧边栏每页重复，主体按 .mod-main 子块切分

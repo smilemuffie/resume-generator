@@ -199,6 +199,11 @@ body {
 .pane-action.is-copied {
   color: #0f766e;
 }
+.pane-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
 
 /* 编辑器面板 */
 .editor-pane {
@@ -289,4 +294,76 @@ body {
 .toast.is-visible {
   opacity: 1;
   transform: translate(-50%, -50%) scale(1);
+}
+
+/* ===== 确认弹窗 modal ===== */
+.modal-mask {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 25, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  z-index: 1100;
+}
+.modal-mask.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+.modal {
+  width: 360px;
+  max-width: calc(100vw - 32px);
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
+  padding: 20px 24px 18px;
+  transform: scale(0.92);
+  transition: transform 0.2s ease;
+}
+.modal-mask.is-visible .modal {
+  transform: scale(1);
+}
+.modal-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1f2329;
+}
+.modal-desc {
+  margin-top: 8px;
+  font-size: 13px;
+  color: #5a6068;
+  line-height: 1.5;
+}
+.modal-actions {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+.modal-btn {
+  height: 32px;
+  padding: 0 16px;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: background 0.15s, border-color 0.15s;
+}
+.modal-cancel {
+  background: #fff;
+  border-color: #d4d8de;
+  color: #1f2329;
+}
+.modal-cancel:hover {
+  background: #f2f3f5;
+}
+.modal-confirm {
+  background: #dc2626;
+  color: #fff;
+}
+.modal-confirm:hover {
+  background: #c0210f;
 }
