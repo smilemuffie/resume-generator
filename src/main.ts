@@ -46,19 +46,31 @@ function bootstrap(): void {
 
   // 复制编辑器内容到剪贴板
   const copyBtn = document.querySelector<HTMLButtonElement>('#copy-btn');
+  const toastEl = document.querySelector<HTMLElement>('#toast');
+  let toastTimer: number | undefined;
   if (copyBtn) {
     copyBtn.addEventListener('click', async () => {
       const text = getEditorText();
       try {
         await navigator.clipboard.writeText(text);
         copyBtn.classList.add('is-copied');
-        copyBtn.title = '已复制';
+        if (toastEl) {
+          toastEl.textContent = '复制成功';
+          toastEl.classList.add('is-visible');
+          if (toastTimer) window.clearTimeout(toastTimer);
+          toastTimer = window.setTimeout(() => toastEl.classList.remove('is-visible'), 1600);
+        }
         setTimeout(() => {
           copyBtn.classList.remove('is-copied');
           copyBtn.title = '复制 JSON';
         }, 1500);
       } catch {
-        // 剪贴板不可用：静默忽略
+        if (toastEl) {
+          toastEl.textContent = '复制失败';
+          toastEl.classList.add('is-visible');
+          if (toastTimer) window.clearTimeout(toastTimer);
+          toastTimer = window.setTimeout(() => toastEl.classList.remove('is-visible'), 1600);
+        }
       }
     });
   }
