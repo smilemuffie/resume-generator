@@ -1,0 +1,55 @@
+/* 打印样式：仅显示当前语言简历页 */
+@media print {
+  /* 强制保留背景色：modern 深色侧边栏、强调色条、chip/pill 底色在 PDF 中正常呈现 */
+  *,
+  *::before,
+  *::after {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  /* 隐藏应用 UI */
+  .toolbar,
+  .editor-pane,
+  .pane-title {
+    display: none !important;
+  }
+
+  body {
+    background: #fff;
+  }
+
+  #app,
+  .main,
+  .preview-pane,
+  .preview-scroll {
+    display: block !important;
+    height: auto !important;
+    overflow: visible !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: #fff !important;
+  }
+
+  .resume-page {
+    width: 210mm !important;
+    height: 297mm !important;
+    min-height: 0 !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+    break-after: page;
+    page-break-after: always;
+  }
+  .resume-page:last-child {
+    break-after: auto;
+    page-break-after: auto;
+  }
+
+  /* A4 页面边距由模板 padding 提供（固定边距） */
+  @page {
+    size: A4;
+    margin: 0;
+  }
+}

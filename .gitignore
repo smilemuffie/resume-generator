@@ -1,0 +1,5 @@
+node_modules
+dist
+.trae
+.DS_Store
+*.local

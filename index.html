@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>简历生成器 · Resume Generator</title>
+  </head>
+  <body>
+    <div id="app">
+      <!-- 顶栏：语言切换 + 模板下拉 + 导出按钮 -->
+      <header class="toolbar">
+        <div class="brand">
+          <span class="brand-name">简历生成器</span>
+          <span class="brand-sub">Resume Generator</span>
+        </div>
+        <div class="toolbar-actions">
+          <div class="lang-toggle" role="group" aria-label="语言切换">
+            <button type="button" class="lang-btn" data-lang="zh">中</button>
+            <button type="button" class="lang-btn" data-lang="en">EN</button>
+          </div>
+          <div class="theme-palette" role="group" aria-label="主题色"></div>
+          <button type="button" class="btn-format">JSON模版下载</button>
+          <button type="button" class="btn-export">导出 PDF</button>
+        </div>
+      </header>
+
+      <!-- 主体：左编辑器 + 右预览 -->
+      <main class="main">
+        <section class="editor-pane">
+          <div class="pane-title">JSON 编辑器</div>
+          <div class="cm-host"></div>
+        </section>
+        <section class="preview-pane">
+          <div class="pane-title">预览</div>
+          <div class="preview-scroll"></div>
+        </section>
+      </main>
+    </div>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
