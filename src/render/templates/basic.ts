@@ -26,7 +26,12 @@ export function render(r: Resume, lang: Lang): string {
     ${profiles ? `<div class="r-contact">${profiles}</div>` : ''}
   </header>`;
 
-  if (b.summary) h += `<p class="r-summary">${b.summary}</p>`;
+  if (b.summary || (b.highlights || []).length) {
+    let inner = '';
+    if (b.summary) inner += `<p class="r-summary">${b.summary}</p>`;
+    if ((b.highlights || []).length) inner += `<ul class="r-highlights r-summary-highlights">${listItems(b.highlights!)}</ul>`;
+    h += section(L.summary, 'sparkles', inner);
+  }
 
   if ((r.work || []).length) {
     h += section(L.work, 'briefcase', r.work.map((w) => item(

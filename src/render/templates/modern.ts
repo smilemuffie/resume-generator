@@ -45,7 +45,12 @@ export function render(r: Resume, lang: Lang): string {
 
   // 主体
   let main = '';
-  if (b.summary) main += `<section class="mod-block"><h2 class="mod-title">${icon('sparkles')}<span>${esc(L.summary)}</span></h2><p class="mod-summary">${b.summary}</p></section>`;
+  if (b.summary || (b.highlights || []).length) {
+    let inner = '';
+    if (b.summary) inner += `<p class="mod-summary">${b.summary}</p>`;
+    if ((b.highlights || []).length) inner += `<ul class="mod-highlights mod-summary-highlights">${listItems(b.highlights!)}</ul>`;
+    main += `<section class="mod-block"><h2 class="mod-title">${icon('sparkles')}<span>${esc(L.summary)}</span></h2>${inner}</section>`;
+  }
 
   if ((r.work || []).length) {
     main += modSection(L.work, 'briefcase', r.work.map((w) => modItem(esc(w.company), dateRange(w.startDate, w.endDate), w.summary, w.highlights, w.position ? [w.position] : [])).join(''));

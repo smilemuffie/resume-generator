@@ -22,7 +22,12 @@ export function render(r: Resume, lang: Lang): string {
     ${contact.length ? `<div class="min-contact">${contact.join('<span class="min-sep">·</span>')}</div>` : ''}
   </header>`;
 
-  if (b.summary) h += minSection(L.summary, `<p class="min-summary">${b.summary}</p>`);
+  if (b.summary || (b.highlights || []).length) {
+    let inner = '';
+    if (b.summary) inner += `<p class="min-summary">${b.summary}</p>`;
+    if ((b.highlights || []).length) inner += `<ul class="min-highlights min-summary-highlights">${listItems(b.highlights!)}</ul>`;
+    h += minSection(L.summary, inner);
+  }
 
   if ((r.certificates || []).length) {
     h += minSection(L.certificates, `<div class="min-chips">${r.certificates.map((c) => chip(c.name, 'plain')).join('')}</div>`);

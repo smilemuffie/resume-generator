@@ -72,6 +72,14 @@
   font-weight: 600;
 }
 
+/* 证书和技能下的 tag 加粗（与职位 tag 视觉一致） */
+.min-chips .chip,
+.r-skill-kws .chip,
+.mod-skill-kws .chip,
+.min-skill-kws .chip {
+  font-weight: 600;
+}
+
 /* ===================== 基础模板 ===================== */
 .tpl-basic {
   font-family: Georgia, 'Times New Roman', 'Songti SC', serif;
@@ -129,9 +137,23 @@
   font-size: 13px;
   color: #3a4150;
   line-height: 1.7;
-  margin: 4px 0 6px;
+  margin: 0 0 10px;
   font-style: italic;
-  text-align: center;
+  text-align: left;
+  background: var(--bg-soft);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--accent);
+  padding: 10px 14px;
+  border-radius: 3px;
+}
+.r-summary-highlights {
+  margin-top: 12px;
+}
+.r-summary-highlights li::before {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  transform: none;
 }
 .r-section {
   margin-top: 18px;
@@ -387,8 +409,16 @@
 .mod-summary {
   font-size: 13px;
   color: #374151;
-  margin: 0;
+  margin: 0 0 10px;
   line-height: 1.7;
+  background: var(--bg-soft);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--accent);
+  padding: 10px 14px;
+  border-radius: 3px;
+}
+.mod-summary-highlights {
+  margin-top: 12px;
 }
 .mod-item {
   position: relative;
@@ -523,9 +553,17 @@
   font-size: 13px;
   color: #374151;
   text-align: left;
-  margin: 0;
+  margin: 0 0 10px;
   line-height: 1.8;
   letter-spacing: 0.2px;
+  background: var(--bg-soft);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--accent);
+  padding: 10px 14px;
+  border-radius: 3px;
+}
+.min-summary-highlights {
+  margin-top: 12px;
 }
 .min-section {
   margin-top: 22px;

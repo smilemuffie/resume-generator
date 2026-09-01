@@ -11,6 +11,11 @@ export const sampleDoc: ResumeDoc = {
       phone: '138-0000-0000',
       website: 'https://zhangsan.dev',
       summary: '5 年前端经验，熟练 TypeScript / React / Vite，专注中台架构与工程化提效。',
+      highlights: [
+        '主导中台前端架构与组件体系建设，沉淀 30+ 通用组件',
+        '推动构建体系升级，平均构建速度提升 40%，首屏体积减少 60%',
+        '跨团队协作，牵头工程化规范落地，覆盖 20+ 前端项目'
+      ],
       location: { city: '上海', region: '中国' },
       profiles: [{ network: 'GitHub', url: 'https://github.com/zhangsan' }]
     },
@@ -90,6 +95,11 @@ export const sampleDoc: ResumeDoc = {
       phone: '+86 138-0000-0000',
       website: 'https://zhangsan.dev',
       summary: '5 years of frontend experience, proficient in TypeScript / React / Vite, focused on mid-platform architecture and tooling efficiency.',
+      highlights: [
+        'Led mid-platform frontend architecture and component system, shipped 30+ reusable components',
+        'Upgraded build pipeline, gaining 40% faster builds and 60% smaller first-screen bundle',
+        'Drove engineering-wide tooling standards across 20+ frontend projects'
+      ],
       location: { city: 'Shanghai', region: 'China' },
       profiles: [{ network: 'GitHub', url: 'https://github.com/zhangsan' }]
     },

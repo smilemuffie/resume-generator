@@ -21,6 +21,7 @@ export interface Basics {
   phone: string;
   website: string;
   summary: string;
+  highlights?: string[];
   location?: Location;
   profiles?: Profile[];
 }
