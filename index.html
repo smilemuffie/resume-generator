@@ -27,7 +27,12 @@
       <!-- 主体：左编辑器 + 右预览 -->
       <main class="main">
         <section class="editor-pane">
-          <div class="pane-title">JSON 编辑器</div>
+          <div class="pane-title">
+            <span class="pane-title-text">JSON 编辑器</span>
+            <button type="button" class="pane-action" id="copy-btn" title="复制 JSON" aria-label="复制 JSON 内容">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+            </button>
+          </div>
           <div class="cm-host"></div>
         </section>
         <section class="preview-pane">

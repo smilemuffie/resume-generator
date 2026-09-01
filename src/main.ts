@@ -12,7 +12,7 @@ import {
   subscribe
 } from './store';
 import { THEME_COLORS } from './theme';
-import { initEditor } from './editor/json-editor';
+import { getEditorText, initEditor } from './editor/json-editor';
 import { initRenderer } from './render/renderer';
 import { initExport } from './export/print';
 import type { Lang, TemplateId } from './types';
@@ -43,6 +43,25 @@ function bootstrap(): void {
   initEditor(cmHost);
   initRenderer(previewEl);
   initExport(exportBtn);
+
+  // 复制编辑器内容到剪贴板
+  const copyBtn = document.querySelector<HTMLButtonElement>('#copy-btn');
+  if (copyBtn) {
+    copyBtn.addEventListener('click', async () => {
+      const text = getEditorText();
+      try {
+        await navigator.clipboard.writeText(text);
+        copyBtn.classList.add('is-copied');
+        copyBtn.title = '已复制';
+        setTimeout(() => {
+          copyBtn.classList.remove('is-copied');
+          copyBtn.title = '复制 JSON';
+        }, 1500);
+      } catch {
+        // 剪贴板不可用：静默忽略
+      }
+    });
+  }
 
   // 4. 下载 JSON 模版（固定使用内置完整模版，含所有字段，仅中文）
   formatBtn.addEventListener('click', () => {

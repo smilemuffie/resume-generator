@@ -57,3 +57,8 @@ export function loadResumeIntoEditor(resume: Resume): void {
     changes: { from: 0, to: view.state.doc.length, insert: text }
   });
 }
+
+// 取编辑器当前文本（用于复制）
+export function getEditorText(): string {
+  return view ? view.state.doc.toString() : '';
+}
