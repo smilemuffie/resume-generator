@@ -1,5 +1,5 @@
 import type { Lang, Resume } from '../../types';
-import { chip, dateRange, esc, icon, LABELS, listItems } from './util';
+import { ageLabel, chip, dateRange, esc, icon, LABELS, listItems } from './util';
 
 // 极简模板：单栏无衬线，大留白，细点分隔，chips，单点强调
 export function render(r: Resume, lang: Lang): string {
@@ -9,6 +9,9 @@ export function render(r: Resume, lang: Lang): string {
   const contact: string[] = [];
   if (b.email) contact.push(`<span class="min-contact-item">${icon('mail')}<a href="mailto:${esc(b.email)}" class="min-link">${esc(b.email)}</a></span>`);
   if (b.phone) contact.push(`<span class="min-contact-item">${icon('phone')}${esc(b.phone)}</span>`);
+  if (b.gender) contact.push(`<span class="min-contact-item">${icon('user')}${esc(b.gender)}</span>`);
+  const age = ageLabel(b.birthDate, lang);
+  if (age) contact.push(`<span class="min-contact-item">${icon('clock')}${esc(age)}</span>`);
   if (b.website) contact.push(`<span class="min-contact-item">${icon('globe')}<a href="${esc(b.website)}" class="min-link">${esc(b.website)}</a></span>`);
   const loc = b.location ? [b.location.city, b.location.region].filter(Boolean).join(', ') : '';
   if (loc) contact.push(`<span class="min-contact-item">${icon('pin')}${esc(loc)}</span>`);
@@ -54,7 +57,7 @@ export function render(r: Resume, lang: Lang): string {
     h += minSection(L.languages, `<div class="min-chips">${r.languages.map((l) => chip(`${l.language}${l.fluency ? ` · ${l.fluency}` : ''}`, 'plain')).join('')}</div>`);
   }
   if ((r.interests || []).length) {
-    h += minSection(L.interests, `<div class="min-chips">${r.interests.flatMap((i) => [chip(i.name, 'plain'), ...(i.keywords || []).map((k) => chip(k, 'plain'))]).join('')}</div>`);
+    h += minSection(L.interests, `<div class="min-chips">${r.interests.map((i) => chip(i, 'plain')).join('')}</div>`);
   }
 
   h += `</div>`;

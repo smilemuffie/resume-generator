@@ -1,5 +1,5 @@
 import type { Lang, Resume } from '../../types';
-import { chip, dateRange, esc, icon, LABELS, listItems } from './util';
+import { ageLabel, chip, dateRange, esc, icon, LABELS, listItems } from './util';
 
 // 现代模板：左 35% 深色渐变侧边栏 + 右 65% 主体（蓝色强调）
 export function render(r: Resume, lang: Lang): string {
@@ -15,6 +15,9 @@ export function render(r: Resume, lang: Lang): string {
   const contact: string[] = [];
   if (b.email) contact.push(`<div class="mod-contact-row">${icon('mail')}<a href="mailto:${esc(b.email)}" class="mod-link">${esc(b.email)}</a></div>`);
   if (b.phone) contact.push(`<div class="mod-contact-row">${icon('phone')}<span>${esc(b.phone)}</span></div>`);
+  if (b.gender) contact.push(`<div class="mod-contact-row">${icon('user')}<span>${esc(b.gender)}</span></div>`);
+  const age = ageLabel(b.birthDate, lang);
+  if (age) contact.push(`<div class="mod-contact-row">${icon('clock')}<span>${esc(age)}</span></div>`);
   if (b.website) contact.push(`<div class="mod-contact-row">${icon('globe')}<a href="${esc(b.website)}" class="mod-link">${esc(b.website)}</a></div>`);
   const loc = b.location ? [b.location.city, b.location.region].filter(Boolean).join(', ') : '';
   if (loc) contact.push(`<div class="mod-contact-row">${icon('pin')}<span>${esc(loc)}</span></div>`);
@@ -33,10 +36,7 @@ export function render(r: Resume, lang: Lang): string {
   }
 
   if ((r.interests || []).length) {
-    side += sideBlock(L.interests, 'heart', r.interests.map((i) => {
-      const kws = (i.keywords || []).map((k) => chip(k, 'plain')).join('');
-      return `<div class="mod-int">${chip(i.name, 'accent')}${kws ? `<span class="mod-skill-kws">${kws}</span>` : ''}</div>`;
-    }).join(''));
+    side += sideBlock(L.interests, 'heart', `<div class="mod-int-chips">${r.interests.map((i) => chip(i, 'plain')).join('')}</div>`);
   }
 
   if ((r.awards || []).length) {

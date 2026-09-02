@@ -17,6 +17,8 @@ export interface Profile {
 export interface Basics {
   name: string;
   label: string;
+  gender: string;
+  birthDate: string;
   email: string;
   phone: string;
   website: string;
@@ -80,11 +82,6 @@ export interface LanguageItem {
   fluency: string;
 }
 
-export interface Interest {
-  name: string;
-  keywords: string[];
-}
-
 export interface Resume {
   basics: Basics;
   work: Work[];
@@ -94,7 +91,7 @@ export interface Resume {
   certificates: Certificate[];
   awards: Award[];
   languages: LanguageItem[];
-  interests: Interest[];
+  interests: string[];
 }
 
 // 多语言文档：中/英各一份完整简历

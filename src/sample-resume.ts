@@ -7,6 +7,8 @@ export const sampleDoc: ResumeDoc = {
     basics: {
       name: '张三',
       label: '前端工程师',
+      gender: '男',
+      birthDate: '1995-08',
       email: 'zhangsan@example.com',
       phone: '138-0000-0000',
       website: 'https://zhangsan.dev',
@@ -85,12 +87,14 @@ export const sampleDoc: ResumeDoc = {
       { language: '中文', fluency: '母语' },
       { language: '英语', fluency: '流利' }
     ],
-    interests: [{ name: '开源', keywords: ['Vite 插件', '工具链'] }]
+    interests: ['开源', 'Vite 插件', '工具链', '阅读', '长跑']
   },
   en: {
     basics: {
       name: 'Zhang San',
       label: 'Frontend Engineer',
+      gender: 'Male',
+      birthDate: '1995-08',
       email: 'zhangsan@example.com',
       phone: '+86 138-0000-0000',
       website: 'https://zhangsan.dev',
@@ -169,6 +173,6 @@ export const sampleDoc: ResumeDoc = {
       { language: 'Chinese', fluency: 'Native' },
       { language: 'English', fluency: 'Fluent' }
     ],
-    interests: [{ name: 'Open Source', keywords: ['Vite plugins', 'Tooling'] }]
+    interests: ['Open Source', 'Vite Plugins', 'Tooling', 'Reading', 'Running']
   }
 };

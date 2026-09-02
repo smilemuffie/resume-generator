@@ -79,6 +79,8 @@ function emptyResume(): Resume {
     basics: {
       name: '',
       label: '',
+      gender: '',
+      birthDate: '',
       email: '',
       phone: '',
       website: '',

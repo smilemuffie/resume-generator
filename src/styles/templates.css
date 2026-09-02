@@ -270,12 +270,6 @@
   flex-wrap: wrap;
   align-items: center;
 }
-.r-interest {
-  display: inline-flex;
-  align-items: center;
-  flex-wrap: wrap;
-  margin-right: 6px;
-}
 
 /* ===================== 现代模板 ===================== */
 .tpl-modern {
@@ -368,11 +362,11 @@
 .mod-lang-flu {
   color: #9ca3af;
 }
-.mod-int {
-  margin-bottom: 6px;
-}
-.mod-int .mod-skill-kws {
-  margin-top: 4px;
+.mod-int-chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
 }
 .mod-award {
   margin-bottom: 8px;
@@ -684,6 +678,12 @@
   border-color: var(--accent-soft);
   color: var(--accent);
   background: var(--accent-soft);
+}
+/* 现代模板侧边栏标签：深色背景下使用半透明深底 + 浅文字 */
+.tpl-modern .chip--plain {
+  border-color: rgba(255, 255, 255, 0.18);
+  color: #d1d5db;
+  background: rgba(255, 255, 255, 0.08);
 }
 
 /* 防跨页截断 */

@@ -1,5 +1,5 @@
 import type { Lang, Resume } from '../../types';
-import { chip, dateRange, esc, icon, LABELS, listItems } from './util';
+import { ageLabel, chip, dateRange, esc, icon, LABELS, listItems } from './util';
 
 // 基础模板：单栏衬线，传统专业风（钢蓝强调色）
 export function render(r: Resume, lang: Lang): string {
@@ -10,6 +10,9 @@ export function render(r: Resume, lang: Lang): string {
   const contact: string[] = [];
   if (b.email) contact.push(`<span class="r-contact-item">${icon('mail')}<a href="mailto:${esc(b.email)}" class="r-link">${esc(b.email)}</a></span>`);
   if (b.phone) contact.push(`<span class="r-contact-item">${icon('phone')}${esc(b.phone)}</span>`);
+  if (b.gender) contact.push(`<span class="r-contact-item">${icon('user')}${esc(b.gender)}</span>`);
+  const age = ageLabel(b.birthDate, lang);
+  if (age) contact.push(`<span class="r-contact-item">${icon('clock')}${esc(age)}</span>`);
   if (b.website) contact.push(`<span class="r-contact-item">${icon('globe')}<a href="${esc(b.website)}" class="r-link">${esc(b.website)}</a></span>`);
   const loc = b.location ? [b.location.city, b.location.region].filter(Boolean).join(', ') : '';
   if (loc) contact.push(`<span class="r-contact-item">${icon('pin')}${esc(loc)}</span>`);
@@ -92,10 +95,7 @@ export function render(r: Resume, lang: Lang): string {
   }
 
   if ((r.interests || []).length) {
-    h += section(L.interests, 'heart', `<div class="r-interests">${r.interests.map((i) => {
-      const kws = (i.keywords || []).map((k) => chip(k, 'plain')).join('');
-      return `<span class="r-interest">${chip(i.name, 'accent')}${kws ? `<span class="r-skill-kws">${kws}</span>` : ''}</span>`;
-    }).join('')}</div>`);
+    h += section(L.interests, 'heart', `<div class="r-interests">${r.interests.map((i) => chip(i, 'plain')).join('')}</div>`);
   }
 
   h += `</div>`;

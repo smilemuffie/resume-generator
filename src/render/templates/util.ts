@@ -15,6 +15,34 @@ export function dateRange(start = '', end = ''): string {
   return s || e || '';
 }
 
+// 由出生年月计算周岁；支持 YYYY-MM / YYYY-MM-DD / YYYY/MM 等
+export function calcAge(birthDate: string): number | null {
+  const s = (birthDate || '').trim();
+  if (!s) return null;
+  const parts = s.split(/[-/.]/).map((p) => parseInt(p, 10)).filter((n) => !isNaN(n));
+  if (parts.length < 2) return null;
+  const year = parts[0];
+  const month = parts[1];
+  const day = parts[2] || 1;
+  if (year < 1900 || year > 2100) return null;
+  const now = new Date();
+  let age = now.getFullYear() - year;
+  if (
+    now.getMonth() + 1 < month ||
+    (now.getMonth() + 1 === month && now.getDate() < day)
+  ) {
+    age--;
+  }
+  return age >= 0 ? age : null;
+}
+
+// 年龄文案：zh -> "35 岁"，en -> "35 yrs"
+export function ageLabel(birthDate: string, lang: Lang): string {
+  const age = calcAge(birthDate);
+  if (age === null) return '';
+  return lang === 'zh' ? `${age} 岁` : `${age} yrs`;
+}
+
 // 列表项（使用默认 <li>，符号由 CSS ::before 绘制）
 // 支持 HTML：内容原样输出，可写 <b>/<a>/<br> 等标签，也可纯文本
 export function listItems(items: string[] = []): string {
@@ -76,7 +104,9 @@ export type IconName =
   | 'certificate'
   | 'translate'
   | 'heart'
-  | 'sparkles';
+  | 'sparkles'
+  | 'user'
+  | 'clock';
 
 const ICON_PATHS: Record<IconName, string> = {
   mail: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/>',
@@ -96,7 +126,9 @@ const ICON_PATHS: Record<IconName, string> = {
     '<path d="M4 5h7"/><path d="M7 3v2c0 4-2 6-5 7"/><path d="M4 12c2-1 4-3 4-5"/><path d="M14 19h7"/><path d="M17 21l-4-9h3l4 9z"/>',
   heart: '<path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2 4 4 0 0 1 7 2c0 5.5-7 10-7 10z"/>',
   sparkles:
-    '<path d="M12 3l2 6 6 2-6 2-2 6-2-6-6-2 6-2z"/><path d="M19 4l1 2 2 1-2 1-1 2-1-2-2-1 2-1z"/>'
+    '<path d="M12 3l2 6 6 2-6 2-2 6-2-6-6-2 6-2z"/><path d="M19 4l1 2 2 1-2 1-1 2-1-2-2-1 2-1z"/>',
+  user: '<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/>',
+  clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>'
 };
 
 export function icon(name: IconName): string {
