@@ -237,6 +237,7 @@ body {
   background: #e9ecef;
 }
 .preview-scroll {
+  --page-scale: 1;
   flex: 1 1 auto;
   min-height: 0;
   overflow: auto;
@@ -250,6 +251,8 @@ body {
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
   box-sizing: border-box;
   overflow: hidden;
+  /* 屏幕预览按容器宽度缩放；打印由 print.css 重置为真实 A4 尺寸 */
+  zoom: var(--page-scale);
 }
 .resume-page:last-child {
   margin-bottom: 0;

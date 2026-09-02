@@ -39,6 +39,7 @@
     box-shadow: none !important;
     margin: 0 !important;
     overflow: hidden !important;
+    zoom: 1 !important; /* 打印重置为真实 A4 尺寸 */
     break-after: page;
     page-break-after: always;
   }
