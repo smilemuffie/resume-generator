@@ -1,6 +1,8 @@
 # 简历生成器 · Resume Generator
 
-一个 JSON 驱动的简历生成工具：左侧编辑 JSON，右侧实时预览 A4 排版，支持自动分页、主题色切换、中英双语，一键导出 PDF。
+一个 JSON 驱动的简历生成工具：左侧编辑 JSON，右侧实时预览 A4 排版，支持自动分页、主题色切换、中英双语，一键导出 [PDF](./docs/resume-demo.pdf)。
+
+![resume](./docs/resume-generator.png)
 
 ## 功能特性
 
