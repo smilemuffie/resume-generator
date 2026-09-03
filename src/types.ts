@@ -2,7 +2,7 @@
 // 多语言模型：整份按语言分版本，ResumeDoc = { zh: Resume; en: Resume }
 
 export type Lang = 'zh' | 'en';
-export type TemplateId = 'basic' | 'modern' | 'minimal';
+export type TemplateId = 'basic' | 'modern' | 'minimal' | 'tabular' | 'pure';
 
 export interface Location {
   city: string;
@@ -35,6 +35,7 @@ export interface Work {
   endDate: string;
   summary: string;
   highlights: string[];
+  stack?: string[];
 }
 
 export interface Education {

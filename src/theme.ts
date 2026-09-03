@@ -15,14 +15,17 @@ export const THEME_COLORS: ThemeColor[] = [
   { name: '玫红', accent: '#db2777', soft: '#fce7f3' },
   { name: '砖红', accent: '#c2410c', soft: '#ffedd5' },
   { name: '琥珀', accent: '#b45309', soft: '#fef3c7' },
-  { name: '森绿', accent: '#15803d', soft: '#dcfce7' }
+  { name: '森绿', accent: '#15803d', soft: '#dcfce7' },
+  { name: '炭黑', accent: '#1f2937', soft: '#f1f3f5' }
 ];
 
 // 各模板默认配色（与 CSS 初始值一致）
 export const DEFAULT_COLORS: Record<TemplateId, string> = {
   basic: '#2c5282',
   modern: '#3b82f6',
-  minimal: '#0f766e'
+  minimal: '#0f766e',
+  tabular: '#1e40af',
+  pure: '#1f2937'
 };
 
 // 由 accent 查找配套的 soft；未命中回退第一项

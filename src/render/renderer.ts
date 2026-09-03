@@ -4,6 +4,8 @@ import type { Lang, Resume, TemplateId } from '../types';
 import { render as renderBasic } from './templates/basic';
 import { render as renderModern } from './templates/modern';
 import { render as renderMinimal } from './templates/minimal';
+import { render as renderPure } from './templates/pure';
+import { render as renderTabular } from './templates/tabular';
 import { paginate } from './paginate';
 
 type TemplateFn = (r: Resume, lang: Lang) => string;
@@ -11,7 +13,9 @@ type TemplateFn = (r: Resume, lang: Lang) => string;
 const TEMPLATES: Record<TemplateId, TemplateFn> = {
   basic: renderBasic,
   modern: renderModern,
-  minimal: renderMinimal
+  minimal: renderMinimal,
+  tabular: renderTabular,
+  pure: renderPure
 };
 
 // A4 页面宽度（210mm @ 96dpi）

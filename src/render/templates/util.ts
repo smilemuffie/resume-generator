@@ -62,6 +62,7 @@ export interface Labels {
   languages: string;
   interests: string;
   summary: string;
+  stack: string;
 }
 
 // 区块标题随当前语言本地化（模板 chrome 不在 JSON 内）
@@ -75,7 +76,8 @@ export const LABELS: Record<Lang, Labels> = {
     certificates: '证书',
     languages: '语言能力',
     interests: '兴趣',
-    summary: '个人简介'
+    summary: '个人简介',
+    stack: '技术栈'
   },
   en: {
     work: 'Experience',
@@ -86,7 +88,8 @@ export const LABELS: Record<Lang, Labels> = {
     certificates: 'Certificates',
     languages: 'Languages',
     interests: 'Interests',
-    summary: 'Profile'
+    summary: 'Profile',
+    stack: 'Stack'
   }
 };
 

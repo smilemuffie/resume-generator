@@ -3,11 +3,12 @@ import './styles/templates.css';
 import './styles/print.css';
 
 import { sampleDoc } from './sample-resume';
-import { loadColors, loadDoc, loadLang } from './storage';
+import { loadColors, loadDoc, loadLang, loadTemplate } from './storage';
 import {
   getState,
   initStore,
   setLang,
+  setTemplate,
   setThemeColor,
   subscribe
 } from './store';
@@ -23,7 +24,7 @@ function bootstrap(): void {
   initStore({
     doc,
     lang: loadLang(),
-    template: 'minimal',
+    template: loadTemplate(),
     colors: loadColors() ?? ({} as Record<TemplateId, string>)
   });
 
@@ -34,7 +35,8 @@ function bootstrap(): void {
   const formatBtn = document.querySelector<HTMLButtonElement>('.btn-format');
   const paletteEl = document.querySelector<HTMLElement>('.theme-palette');
   const langBtns = document.querySelectorAll<HTMLButtonElement>('.lang-btn');
-  if (!cmHost || !previewEl || !exportBtn || !formatBtn || !paletteEl || !langBtns.length) {
+  const tplSelect = document.querySelector<HTMLSelectElement>('#tpl-select');
+  if (!cmHost || !previewEl || !exportBtn || !formatBtn || !paletteEl || !langBtns.length || !tplSelect) {
     console.error('初始化失败：缺少必要的 DOM 节点');
     return;
   }
@@ -43,6 +45,23 @@ function bootstrap(): void {
   initEditor(cmHost);
   initRenderer(previewEl);
   initExport(exportBtn);
+
+  // 模板下拉：切换 + 持久化
+  const syncTplUI = (): void => {
+    tplSelect.value = getState().template;
+  };
+  syncTplUI();
+  subscribe(syncTplUI);
+  tplSelect.addEventListener('change', () => {
+    const t = tplSelect.value as TemplateId;
+    if (t && t !== getState().template) setTemplate(t);
+  });
+
+  // 使用说明：在新标签页打开 docs/readme.html
+  const helpBtn = document.querySelector<HTMLButtonElement>('#help-btn');
+  helpBtn?.addEventListener('click', () => {
+    window.open('docs/readme.html', '_blank', 'noopener,noreferrer');
+  });
 
   // 复制编辑器内容到剪贴板
   const copyBtn = document.querySelector<HTMLButtonElement>('#copy-btn');
@@ -74,6 +93,27 @@ function bootstrap(): void {
       }
     });
   }
+
+  // 导出当前编辑器 JSON 数据为文件
+  const exportJsonBtn = document.querySelector<HTMLButtonElement>('#export-json-btn');
+  exportJsonBtn?.addEventListener('click', () => {
+    const text = getEditorText();
+    const blob = new Blob([text], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'resume-data.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    if (toastEl) {
+      toastEl.textContent = '已导出 JSON';
+      toastEl.classList.add('is-visible');
+      if (toastTimer) window.clearTimeout(toastTimer);
+      toastTimer = window.setTimeout(() => toastEl.classList.remove('is-visible'), 1600);
+    }
+  });
 
   // 清空编辑器（二次确认弹窗）
   const clearBtn = document.querySelector<HTMLButtonElement>('#clear-btn');

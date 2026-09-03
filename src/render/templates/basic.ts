@@ -42,7 +42,9 @@ export function render(r: Resume, lang: Lang): string {
       dateRange(w.startDate, w.endDate),
       w.summary,
       w.highlights,
-      w.position ? [w.position] : []
+      w.position ? [w.position] : [],
+      w.stack || [],
+      L.stack
     )).join(''));
   }
 
@@ -109,14 +111,16 @@ function section(title: string, ic: Parameters<typeof icon>[0], inner: string): 
   </section>`;
 }
 
-function item(title: string, date: string, summary: string, highlights: string[] = [], roles: string[] = []): string {
+function item(title: string, date: string, summary: string, highlights: string[] = [], roles: string[] = [], stack: string[] = [], stackLabel: string = ''): string {
   const rolesHtml = roles.length ? `<span class="r-item-roles">${roles.map((rl) => chip(rl, 'plain')).join('')}</span>` : '';
+  const stackHtml = stack.length && stackLabel ? `<div class="r-item-stack"><span class="r-item-stack-label">${esc(stackLabel)}：</span>${esc(stack.join(', '))}</div>` : '';
   return `<div class="r-item">
     <div class="r-item-head">
       <span class="r-item-title">${title}</span>
       ${rolesHtml}
       ${date ? `<span class="r-item-date">${esc(date)}</span>` : ''}
     </div>
+    ${stackHtml}
     ${summary ? `<p class="r-item-summary">${summary}</p>` : ''}
     ${highlights.length ? `<ul class="r-highlights">${listItems(highlights)}</ul>` : ''}
   </div>`;

@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>简历生成器 · Resume Generator</title>
+  <style>
+    :root {
+      --accent: #2c5282;
+      --accent-soft: #eaf1fb;
+      --ink: #1a1f2c;
+      --muted: #6b7280;
+      --line: #e5e7eb;
+      --bg-soft: #f7f8fa;
+      --bg-code: #1f2937;
+    }
+    * { box-sizing: border-box; }
+    html { -webkit-font-smoothing: antialiased; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--bg-soft);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC',
+        'Hiragino Sans GB', 'Microsoft YaHei', Roboto, Helvetica, Arial, sans-serif;
+      font-size: 15px;
+      line-height: 1.7;
+    }
+    .wrap {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 40px 28px 80px;
+      background: #fff;
+      min-height: 100vh;
+      box-shadow: 0 0 0 1px var(--line);
+    }
+    h1, h2, h3, h4 { color: var(--ink); font-weight: 700; line-height: 1.3; }
+    h1 {
+      font-size: 30px;
+      margin: 0 0 8px;
+      letter-spacing: 0.5px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--ink);
+      position: relative;
+    }
+    h1::after {
+      content: '';
+      display: block;
+      width: 56px;
+      height: 3px;
+      background: var(--accent);
+      margin-top: 12px;
+      border-radius: 2px;
+    }
+    h2 {
+      font-size: 21px;
+      margin: 36px 0 14px;
+      padding: 0 0 6px 12px;
+      border-bottom: 1px solid var(--line);
+      position: relative;
+    }
+    h2::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 4px;
+      bottom: 6px;
+      width: 3px;
+      background: var(--accent);
+      border-radius: 2px;
+    }
+    h3 { font-size: 17px; margin: 24px 0 10px; color: var(--accent); }
+    p { margin: 10px 0; }
+    a { color: var(--accent); text-decoration: none; border-bottom: 1px dotted var(--accent); }
+    a:hover { border-bottom-style: solid; }
+    strong { font-weight: 700; color: var(--ink); }
+    ul, ol { padding-left: 22px; margin: 10px 0; }
+    li { margin: 6px 0; }
+    code {
+      font-family: 'SFMono-Regular', 'JetBrains Mono', Consolas, 'Liberation Mono', Menlo, monospace;
+      font-size: 0.88em;
+      background: var(--accent-soft);
+      color: var(--accent);
+      padding: 1px 6px;
+      border-radius: 3px;
+    }
+    pre {
+      background: var(--bg-code);
+      color: #e5e7eb;
+      padding: 16px 18px;
+      border-radius: 6px;
+      overflow-x: auto;
+      font-size: 13px;
+      line-height: 1.6;
+      margin: 14px 0;
+    }
+    pre code {
+      background: transparent;
+      color: inherit;
+      padding: 0;
+      font-size: inherit;
+    }
+    .jsonc .tok-key { color: #93c5fd; }
+    .jsonc .tok-str { color: #a7f3d0; }
+    .jsonc .tok-com { color: #6b7280; font-style: italic; }
+    blockquote {
+      margin: 14px 0;
+      padding: 10px 14px;
+      background: var(--bg-soft);
+      border-left: 3px solid var(--accent);
+      color: var(--muted);
+      border-radius: 0 4px 4px 0;
+    }
+    blockquote p { margin: 0; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 14px 0;
+      font-size: 14px;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 8px 12px;
+      text-align: left;
+    }
+    th { background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+    tbody tr:nth-child(even) { background: var(--bg-soft); }
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 16px auto;
+      border-radius: 6px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+    }
+    hr { border: 0; border-top: 1px solid var(--line); margin: 28px 0; }
+    .lead { font-size: 16px; color: var(--muted); margin-top: 4px; }
+    .toc {
+      background: var(--bg-soft);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 14px 18px 14px 32px;
+      margin: 20px 0;
+    }
+    .toc h3 { margin: 0 0 6px; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); }
+    .toc ul { margin: 0; padding-left: 0; list-style: none; columns: 2; }
+    .toc li { margin: 4px 0; font-size: 14px; }
+    .toc a { border-bottom: none; color: var(--ink); }
+    .toc a:hover { color: var(--accent); }
+    @media (max-width: 640px) {
+      .wrap { padding: 24px 16px 60px; }
+      h1 { font-size: 24px; }
+      h2 { font-size: 18px; }
+      .toc ul { columns: 1; }
+    }
+    img {
+      cursor: zoom-in;
+      transition: transform 0.2s ease;
+    }
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.82);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      cursor: zoom-out;
+      padding: 24px;
+    }
+    .lightbox.active { display: flex; }
+    .lightbox img {
+      max-width: 92vw;
+      max-height: 90vh;
+      border-radius: 6px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+      cursor: zoom-out;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1><a href="https://github.com/smilemuffie/resume-generator">简历生成器 · Resume Generator</a></h1>
+    <p class="lead">一个 JSON 驱动的简历生成工具：左侧编辑 JSON，右侧实时预览 A4 排版，支持自动分页、主题色切换、中英双语，一键导出 <a href="./resume-demo.pdf">PDF</a>。</p>
+
+    <p><img src="./resume-generator.png" alt="resume" /></p>
+
+    <nav class="toc">
+      <h3>目录</h3>
+      <ul>
+        <li><a href="#gongnengtexing">功能特性</a></li>
+        <li><a href="#jishuzhan">技术栈</a></li>
+        <li><a href="#kuaisukaishi">快速开始</a></li>
+        <li><a href="#shiyongzhinan">使用指南</a></li>
+        <li><a href="#jsonshujujiegou">JSON 数据结构</a></li>
+        <li><a href="#license">License</a></li>
+      </ul>
+    </nav>
+
+    <h2 id="gongnengtexing">功能特性</h2>
+    <ul>
+      <li><strong>JSON 实时编辑</strong> — 左侧 CodeMirror 编辑器，右侧即时渲染，所见即所得</li>
+      <li><strong>编辑器工具栏</strong> — 一键复制 JSON 内容（含 toast 提示）、一键清空（含二次确认弹窗）</li>
+      <li><strong>自动分页</strong> — 内容超出 A4 自动分页，区块标题仅在首页出现，预览与导出均带固定边距</li>
+      <li><strong>主题色切换</strong> — 8 种舒适配色（墨蓝 / 天蓝 / 深海青 / 靛紫 / 玫红 / 砖红 / 琥珀 / 森绿），点击即换色并持久化</li>
+      <li><strong>中英双语</strong> — 整份简历按语言分版本，一键切换中 / EN，两版数据独立存储</li>
+      <li><strong>个人简介升级</strong> — 摘要卡片 + highlights 亮点列表，支持 HTML 标签渲染（<code>&lt;b&gt;</code>、<code>&lt;a&gt;</code> 等）</li>
+      <li><strong>性别 + 年龄</strong> — 填写出生年月（<code>birthDate</code>）自动按周岁换算，与邮箱/手机同排展示</li>
+      <li><strong>本地持久化</strong> — 简历数据、语言、主题色全部存入 localStorage</li>
+      <li><strong>JSON 模版下载</strong> — 下载内置完整中文模版，含所有字段，可直接复用</li>
+      <li><strong>PDF 导出</strong> — 基于浏览器打印，保留背景色与固定 A4 边距</li>
+    </ul>
+
+    <h2 id="jishuzhan">技术栈</h2>
+    <table>
+      <thead><tr><th>类别</th><th>技术</th></tr></thead>
+      <tbody>
+        <tr><td>构建</td><td>Vite</td></tr>
+        <tr><td>语言</td><td>TypeScript</td></tr>
+        <tr><td>编辑器</td><td>CodeMirror 6</td></tr>
+        <tr><td>存储</td><td>localStorage</td></tr>
+        <tr><td>导出</td><td>浏览器原生打印（<code>window.print()</code>）</td></tr>
+      </tbody>
+    </table>
+
+    <h2 id="kuaisukaishi">快速开始</h2>
+    <h3>环境要求</h3>
+    <ul>
+      <li>Node.js ≥ 18</li>
+      <li>npm（或 pnpm / yarn）</li>
+    </ul>
+    <h3>安装与启动</h3>
+<pre><code class="language-bash"># 1. 安装依赖
+npm install
+
+# 2. 启动开发服务器
+npm run dev</code></pre>
+    <p>浏览器打开终端输出的地址（默认 <code>http://localhost:5173/</code>）。</p>
+
+    <h3>构建生产版本</h3>
+<pre><code class="language-bash">npm run build      # 产物输出到 dist/
+npm run preview    # 本地预览生产构建</code></pre>
+
+    <h2 id="shiyongzhinan">使用指南</h2>
+    <h3>1. 编辑简历</h3>
+    <p>左侧 JSON 编辑器中修改内容，右侧预览实时更新。首次打开会加载内置示例数据。</p>
+    <p><strong>编辑器右上角工具按钮：</strong></p>
+    <ul>
+      <li>复制图标：复制当前 JSON 全部内容到剪贴板，下方居中弹出灰色 toast 提示</li>
+      <li>清空图标：弹出二次确认弹窗，确认后清空编辑器（不可撤销，可重新下载模版恢复）</li>
+    </ul>
+
+    <h3>2. 切换语言</h3>
+    <p>顶栏点击 <code>中</code> / <code>EN</code> 切换简历语言。两份语言版本独立存储，互不影响。</p>
+
+    <h3>3. 切换主题色</h3>
+    <p>顶栏调色盘点击任一色块，标题、色条、标签、链接等所有强调元素即时变色。配色与模板绑定并持久化，刷新后保留。</p>
+    <h3>4. 下载 JSON 模版</h3>
+    <p>点击顶栏 <code>JSON模版下载</code>，获取内置完整中文模版（含所有字段示例值），可作为字段参考。下载源为 <a href="./src/sample-resume.ts">sample-resume.ts</a> 的 <code>zh</code> 版本。</p>
+
+    <h3>5. 导出 PDF</h3>
+    <p>点击顶栏 <code>导出 PDF</code>，浏览器调出打印对话框：</p>
+    <ul>
+      <li>目标另存为 PDF</li>
+      <li>纸张选 A4</li>
+      <li>边距选「无」（页面边距已由模板内置）</li>
+    </ul>
+
+    <h2 id="jsonshujujiegou">JSON 数据结构</h2>
+<pre class="jsonc"><code>{
+  <span class="tok-key">"basics"</span>: {
+    <span class="tok-key">"name"</span>: <span class="tok-str">"张三"</span>,
+    <span class="tok-key">"label"</span>: <span class="tok-str">"前端工程师"</span>,
+    <span class="tok-key">"gender"</span>: <span class="tok-str">"男"</span>,                       <span class="tok-com">// 性别，与邮箱/手机同行展示</span>
+    <span class="tok-key">"birthDate"</span>: <span class="tok-str">"1995-08"</span>,               <span class="tok-com">// 出生年月（YYYY-MM），自动按周岁换算为年龄</span>
+    <span class="tok-key">"email"</span>: <span class="tok-str">"zhangsan@example.com"</span>,
+    <span class="tok-key">"phone"</span>: <span class="tok-str">"138-0000-0000"</span>,
+    <span class="tok-key">"website"</span>: <span class="tok-str">"https://zhangsan.dev"</span>,
+    <span class="tok-key">"summary"</span>: <span class="tok-str">"5 年前端开发经验……"</span>,     <span class="tok-com">// 支持 HTML 标签渲染</span>
+    <span class="tok-key">"highlights"</span>: [                       <span class="tok-com">// 个人简介下的亮点列表（可选，支持 HTML）</span>
+      <span class="tok-str">"主导中台前端架构与组件体系建设"</span>,
+      <span class="tok-str">"推动构建体系升级，平均构建速度提升 40%"</span>
+    ],
+    <span class="tok-key">"location"</span>: { <span class="tok-key">"city"</span>: <span class="tok-str">"上海"</span>, <span class="tok-key">"region"</span>: <span class="tok-str">"中国"</span> },
+    <span class="tok-key">"profiles"</span>: [{ <span class="tok-key">"network"</span>: <span class="tok-str">"GitHub"</span>, <span class="tok-key">"url"</span>: <span class="tok-str">"https://github.com/zhangsan"</span> }]
+  },
+  <span class="tok-key">"work"</span>: [{
+    <span class="tok-key">"company"</span>: <span class="tok-str">"某科技公司"</span>,
+    <span class="tok-key">"position"</span>: <span class="tok-str">"高级前端工程师"</span>,          <span class="tok-com">// 以 3px 倒角 tag 展示在标题右侧（加粗）</span>
+    <span class="tok-key">"startDate"</span>: <span class="tok-str">"2022-01"</span>,
+    <span class="tok-key">"endDate"</span>: <span class="tok-str">"至今"</span>,
+    <span class="tok-key">"summary"</span>: <span class="tok-str">"负责中台前端架构……"</span>,       <span class="tok-com">// 支持 HTML 标签渲染</span>
+    <span class="tok-key">"highlights"</span>: [<span class="tok-str">"重构构建系统，构建提速 40%"</span>]  <span class="tok-com">// 支持 HTML 标签渲染</span>
+  }],
+  <span class="tok-key">"education"</span>: [{
+    <span class="tok-key">"institution"</span>: <span class="tok-str">"某大学"</span>,
+    <span class="tok-key">"area"</span>: <span class="tok-str">"计算机科学与技术"</span>,
+    <span class="tok-key">"studyType"</span>: <span class="tok-str">"本科"</span>,
+    <span class="tok-key">"startDate"</span>: <span class="tok-str">"2016-09"</span>,
+    <span class="tok-key">"endDate"</span>: <span class="tok-str">"2020-06"</span>,
+    <span class="tok-key">"score"</span>: <span class="tok-str">"3.8/4.0"</span>
+  }],
+  <span class="tok-key">"skills"</span>: [{
+    <span class="tok-key">"name"</span>: <span class="tok-str">"前端"</span>,                        <span class="tok-com">// 技能分组 label</span>
+    <span class="tok-key">"level"</span>: <span class="tok-str">""</span>,
+    <span class="tok-key">"keywords"</span>: [<span class="tok-str">"React"</span>, <span class="tok-str">"Vue"</span>, <span class="tok-str">"Vite"</span>, <span class="tok-str">"TypeScript"</span>]  <span class="tok-com">// tag 形式展示（加粗）</span>
+  }],
+  <span class="tok-key">"projects"</span>: [{
+    <span class="tok-key">"name"</span>: <span class="tok-str">"简历生成器"</span>,
+    <span class="tok-key">"description"</span>: <span class="tok-str">"基于 JSON 的简历工具……"</span>,  <span class="tok-com">// 支持 HTML 标签渲染</span>
+    <span class="tok-key">"url"</span>: <span class="tok-str">"https://github.com/xx/resume-ge"</span>,
+    <span class="tok-key">"startDate"</span>: <span class="tok-str">"2024-01"</span>,
+    <span class="tok-key">"endDate"</span>: <span class="tok-str">"2024-06"</span>,
+    <span class="tok-key">"highlights"</span>: [<span class="tok-str">"实现多语言编辑与 localStorage 持久化"</span>],  <span class="tok-com">// 支持 HTML 标签渲染</span>
+    <span class="tok-key">"roles"</span>: [<span class="tok-str">"前端负责人"</span>, <span class="tok-str">"架构设计"</span>]     <span class="tok-com">// 以 3px 倒角 tag 展示在标题右侧（加粗）</span>
+  }],
+  <span class="tok-key">"certificates"</span>: [{                       <span class="tok-com">// 以 tag 形式展示（加粗）</span>
+    <span class="tok-key">"name"</span>: <span class="tok-str">"PMP 项目管理专业人士认证"</span>,
+    <span class="tok-key">"issuer"</span>: <span class="tok-str">"PMI"</span>,
+    <span class="tok-key">"date"</span>: <span class="tok-str">"2023-06"</span>,
+    <span class="tok-key">"url"</span>: <span class="tok-str">"https://www.pmi.org/certification"</span>,
+    <span class="tok-key">"summary"</span>: <span class="tok-str">"项目管理方向"</span>
+  }],
+  <span class="tok-key">"awards"</span>: [{ <span class="tok-key">"title"</span>: <span class="tok-str">"年度最佳员工"</span>, <span class="tok-key">"date"</span>: <span class="tok-str">"2023-12"</span>, <span class="tok-key">"awarder"</span>: <span class="tok-str">"某科技公司"</span>, <span class="tok-key">"summary"</span>: <span class="tok-str">"……"</span> }],
+  <span class="tok-key">"languages"</span>: [{ <span class="tok-key">"language"</span>: <span class="tok-str">"中文"</span>, <span class="tok-key">"fluency"</span>: <span class="tok-str">"母语"</span> }],
+  <span class="tok-key">"interests"</span>: [<span class="tok-str">"开源"</span>, <span class="tok-str">"Vite 插件"</span>, <span class="tok-str">"工具链"</span>, <span class="tok-str">"阅读"</span>, <span class="tok-str">"长跑"</span>]  <span class="tok-com">// 字符串数组，以 tag 形式展示</span>
+}</code></pre>
+
+    <h3>支持 HTML 渲染的字段</h3>
+    <p>以下字段在 JSON 中可直接写入 HTML 标签（如 <code>&lt;b&gt;</code>、<code>&lt;strong&gt;</code>、<code>&lt;a&gt;</code>），渲染时会通过 <code>innerHTML</code> 解析；其他字段（姓名、公司名等）仍走 <code>esc()</code> 转义，避免 XSS。</p>
+    <ul>
+      <li><code>basics.summary</code>、<code>basics.highlights[]</code></li>
+      <li><code>work.summary</code>、<code>work.highlights[]</code></li>
+      <li><code>projects.description</code>、<code>projects.highlights[]</code></li>
+    </ul>
+    <p>完整模版可点击 <code>JSON模版下载</code> 获取。</p>
+
+    <h2 id="license">License</h2>
+    <p>MIT</p>
+    
+  </div>
+
+  <div class="lightbox" id="lightbox">
+    <img id="lightbox-img" alt="" />
+  </div>
+
+  <script>
+    (function () {
+      var lb = document.getElementById('lightbox');
+      var lbImg = document.getElementById('lightbox-img');
+      document.querySelectorAll('.wrap img').forEach(function (img) {
+        img.addEventListener('click', function () {
+          lbImg.src = img.src;
+          lbImg.alt = img.alt;
+          lb.classList.add('active');
+        });
+      });
+      function close() { lb.classList.remove('active'); lbImg.src = ''; }
+      lb.addEventListener('click', close);
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') close();
+      });
+    })();
+  </script>
+</body>
+</html>

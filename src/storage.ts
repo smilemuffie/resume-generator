@@ -11,7 +11,7 @@ const KEYS = {
 } as const;
 
 const VALID_LANGS: Lang[] = ['zh', 'en'];
-const VALID_TEMPLATES: TemplateId[] = ['basic', 'modern', 'minimal'];
+const VALID_TEMPLATES: TemplateId[] = ['basic', 'modern', 'minimal', 'tabular', 'pure'];
 
 // 规范化：补全老数据缺失的字段（如新增的 certificates），缺失时回退到示例
 function normalizeResume(r: Partial<Resume> | undefined, lang: Lang): Resume {
@@ -89,7 +89,9 @@ export function loadColors(): Record<TemplateId, string> | null {
       return {
         basic: parsed.basic,
         modern: parsed.modern,
-        minimal: parsed.minimal
+        minimal: parsed.minimal,
+        tabular: parsed.tabular,
+        pure: parsed.pure
       };
     }
     return null;

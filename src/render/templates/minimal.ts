@@ -42,7 +42,7 @@ export function render(r: Resume, lang: Lang): string {
     }).join('')}</div>`);
   }
   if ((r.work || []).length) {
-    h += minSection(L.work, r.work.map((w) => minItem(esc(w.company), dateRange(w.startDate, w.endDate), w.summary, w.highlights, w.position ? [w.position] : [])).join(''));
+    h += minSection(L.work, r.work.map((w) => minItem(esc(w.company), dateRange(w.startDate, w.endDate), w.summary, w.highlights, w.position ? [w.position] : [], w.stack || [], L.stack)).join(''));
   }
   if ((r.projects || []).length) {
     h += minSection(L.projects, r.projects.map((p) => minItem(esc(p.name), dateRange(p.startDate, p.endDate), p.description, p.highlights, p.roles || [])).join(''));
@@ -68,10 +68,12 @@ function minSection(title: string, inner: string): string {
   return `<section class="min-section"><h2 class="min-section-title">${esc(title)}</h2>${inner}</section>`;
 }
 
-function minItem(title: string, date: string, summary: string, highlights: string[] = [], roles: string[] = []): string {
+function minItem(title: string, date: string, summary: string, highlights: string[] = [], roles: string[] = [], stack: string[] = [], stackLabel: string = ''): string {
   const rolesHtml = roles.length ? `<span class="min-item-roles">${roles.map((rl) => chip(rl, 'plain')).join('')}</span>` : '';
+  const stackHtml = stack.length && stackLabel ? `<div class="min-item-stack"><span class="min-item-stack-label">${esc(stackLabel)}：</span>${esc(stack.join(', '))}</div>` : '';
   return `<div class="min-item">
     <div class="min-item-head"><span class="min-item-title">${title}</span>${rolesHtml}${date ? `<span class="min-item-date">${esc(date)}</span>` : ''}</div>
+    ${stackHtml}
     ${summary ? `<p class="min-item-summary">${summary}</p>` : ''}
     ${highlights.length ? `<ul class="min-highlights">${listItems(highlights)}</ul>` : ''}
   </div>`;

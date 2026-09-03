@@ -28,7 +28,8 @@ export const sampleDoc: ResumeDoc = {
         startDate: '2022-01',
         endDate: '至今',
         summary: '负责中台前端架构与组件体系建设。',
-        highlights: ['重构构建系统，构建提速 40%', '搭建组件库，覆盖 30+ 业务页面']
+        highlights: ['重构构建系统，构建提速 40%', '搭建组件库，覆盖 30+ 业务页面'],
+        stack: ['React', 'TypeScript', 'Vite', 'Node.js']
       },
       {
         company: '某创业公司',
@@ -36,7 +37,8 @@ export const sampleDoc: ResumeDoc = {
         startDate: '2020-07',
         endDate: '2021-12',
         summary: '负责核心产品 Web 端开发。',
-        highlights: ['主导性能优化，首屏时间从 3.2s 降至 1.4s']
+        highlights: ['主导性能优化，首屏时间从 3.2s 降至 1.4s'],
+        stack: ['Vue', 'JavaScript', 'Webpack']
       }
     ],
     education: [
@@ -114,7 +116,8 @@ export const sampleDoc: ResumeDoc = {
         startDate: '2022-01',
         endDate: 'Present',
         summary: 'Lead mid-platform frontend architecture and component system.',
-        highlights: ['Refactored build system, 40% faster builds', 'Built component library covering 30+ pages']
+        highlights: ['Refactored build system, 40% faster builds', 'Built component library covering 30+ pages'],
+        stack: ['React', 'TypeScript', 'Vite', 'Node.js']
       },
       {
         company: 'Some Startup',
@@ -122,7 +125,8 @@ export const sampleDoc: ResumeDoc = {
         startDate: '2020-07',
         endDate: '2021-12',
         summary: 'Developed the core product web client.',
-        highlights: ['Led performance optimization, cutting first paint from 3.2s to 1.4s']
+        highlights: ['Led performance optimization, cutting first paint from 3.2s to 1.4s'],
+        stack: ['Vue', 'JavaScript', 'Webpack']
       }
     ],
     education: [
