@@ -64,8 +64,8 @@ export function render(r: Resume, lang: Lang): string {
   return h;
 }
 
-function minSection(title: string, inner: string): string {
-  return `<section class="min-section"><h2 class="min-section-title">${esc(title)}</h2>${inner}</section>`;
+function minSection(title: string, inner: string, key?: string): string {
+  return `<section class="min-section"${key ? ` data-key="${key}"` : ''}><h2 class="min-section-title">${esc(title)}</h2>${inner}</section>`;
 }
 
 function minItem(title: string, date: string, summary: string, highlights: string[] = [], roles: string[] = [], stack: string[] = [], isStackShow?: boolean): string {

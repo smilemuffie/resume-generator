@@ -78,8 +78,8 @@ function sideBlock(title: string, ic: Parameters<typeof icon>[0], inner: string)
   return `<div class="mod-side-block"><h3 class="mod-side-title">${icon(ic)}<span>${esc(title)}</span></h3>${inner}</div>`;
 }
 
-function modSection(title: string, ic: Parameters<typeof icon>[0], inner: string): string {
-  return `<section class="mod-block"><h2 class="mod-title">${icon(ic)}<span>${esc(title)}</span></h2>${inner}</section>`;
+function modSection(title: string, ic: Parameters<typeof icon>[0], inner: string, key?: string): string {
+  return `<section class="mod-block"${key ? ` data-key="${key}"` : ''}><h2 class="mod-title">${icon(ic)}<span>${esc(title)}</span></h2>${inner}</section>`;
 }
 
 function modItem(title: string, date: string, summary: string, highlights: string[] = [], roles: string[] = [], stack: string[] = [], isStackShow?: boolean): string {

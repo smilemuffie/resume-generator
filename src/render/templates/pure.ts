@@ -64,8 +64,8 @@ export function render(r: Resume, lang: Lang): string {
   return h;
 }
 
-function pureSection(title: string, inner: string): string {
-  return `<section class="pure-section"><h2 class="pure-section-title">${esc(title)}</h2>${inner}</section>`;
+function pureSection(title: string, inner: string, key?: string): string {
+  return `<section class="pure-section"${key ? ` data-key="${key}"` : ''}><h2 class="pure-section-title">${esc(title)}</h2>${inner}</section>`;
 }
 
 function pureItem(title: string, date: string, summary: string, highlights: string[] = [], roles: string[] = [], stack: string[] = [], isStackShow?: boolean): string {

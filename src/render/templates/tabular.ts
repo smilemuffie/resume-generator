@@ -96,9 +96,9 @@ export function render(r: Resume, lang: Lang): string {
   return h;
 }
 
-function tabSection(title: string, inner: string, ic?: string): string {
+function tabSection(title: string, inner: string, ic?: string, key?: string): string {
   const iconHtml = ic ? `<span class="tab-title-icn">${ic}</span>` : '';
-  return `<section class="tab-section"><h2 class="tab-section-title">${iconHtml}<span>${esc(title)}</span></h2>${inner}</section>`;
+  return `<section class="tab-section"${key ? ` data-key="${key}"` : ''}><h2 class="tab-section-title">${iconHtml}<span>${esc(title)}</span></h2>${inner}</section>`;
 }
 
 // 通用简单条目（教育/荣誉）
