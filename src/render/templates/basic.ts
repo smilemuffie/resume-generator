@@ -44,7 +44,7 @@ export function render(r: Resume, lang: Lang): string {
       w.highlights,
       w.position ? [w.position] : [],
       w.stack || [],
-      L.stack
+      w.isStackShow
     )).join(''));
   }
 
@@ -54,7 +54,9 @@ export function render(r: Resume, lang: Lang): string {
       dateRange(p.startDate, p.endDate),
       p.description,
       p.highlights,
-      p.roles || []
+      p.roles || [],
+      p.stack || [],
+      p.isStackShow
     )).join(''));
   }
 
@@ -111,9 +113,9 @@ function section(title: string, ic: Parameters<typeof icon>[0], inner: string): 
   </section>`;
 }
 
-function item(title: string, date: string, summary: string, highlights: string[] = [], roles: string[] = [], stack: string[] = [], stackLabel: string = ''): string {
+function item(title: string, date: string, summary: string, highlights: string[] = [], roles: string[] = [], stack: string[] = [], isStackShow?: boolean): string {
   const rolesHtml = roles.length ? `<span class="r-item-roles">${roles.map((rl) => chip(rl, 'plain')).join('')}</span>` : '';
-  const stackHtml = stack.length && stackLabel ? `<div class="r-item-stack"><span class="r-item-stack-label">${esc(stackLabel)}：</span>${esc(stack.join(', '))}</div>` : '';
+  const stackHtml = stack.length && isStackShow !== false ? `<div class="r-item-stack">${stack.map((s) => chip(s, 'accent')).join('')}</div>` : '';
   return `<div class="r-item">
     <div class="r-item-head">
       <span class="r-item-title">${title}</span>

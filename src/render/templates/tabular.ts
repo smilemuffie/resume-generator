@@ -51,7 +51,7 @@ export function render(r: Resume, lang: Lang): string {
   // 工作经历：2 列表格
   if ((r.work || []).length) {
     const rows = r.work.map((w) => {
-      const stackHtml = w.stack?.length ? `<div class="tab-tbl-stack"><span class="tab-tbl-stack-label">${esc(L.stack)}：</span>${esc(w.stack.join(', '))}</div>` : '';
+      const stackHtml = w.stack?.length && w.isStackShow !== false ? `<div class="tab-tbl-stack">${w.stack.map((s) => chip(s, 'accent')).join('')}</div>` : '';
       const left = `<div class="tab-tbl-cell-left">
         <div class="tab-tbl-company">${esc(w.company)}</div>
         ${stackHtml}
@@ -69,7 +69,7 @@ export function render(r: Resume, lang: Lang): string {
 
   // 项目经历
   if ((r.projects || []).length) {
-    h += tabSection(L.projects, r.projects.map((p) => tabProjectItem(p.name, p.url, dateRange(p.startDate, p.endDate), p.description, p.highlights, p.roles || [])).join(''), icon('folder'));
+    h += tabSection(L.projects, r.projects.map((p) => tabProjectItem(p.name, p.url, dateRange(p.startDate, p.endDate), p.description, p.highlights, p.roles || [], p.stack || [], p.isStackShow)).join(''), icon('folder'));
   }
 
   // 教育
@@ -109,12 +109,14 @@ function tabSimpleItem(title: string, date: string, summary: string): string {
   </div>`;
 }
 
-// 项目条目（含角色tag + 链接 + highlights）
-function tabProjectItem(title: string, url: string, date: string, description: string, highlights: string[] = [], roles: string[] = []): string {
+// 项目条目（含角色tag + 链接 + highlights + 技术栈）
+function tabProjectItem(title: string, url: string, date: string, description: string, highlights: string[] = [], roles: string[] = [], stack: string[] = [], isStackShow?: boolean): string {
   const rolesHtml = roles.length ? `<span class="tab-item-roles">${roles.map((rl) => chip(rl, 'accent')).join('')}</span>` : '';
   const titleHtml = url ? `<a href="${esc(url)}" class="tab-link tab-item-title">${esc(title)}</a>` : `<span class="tab-item-title">${esc(title)}</span>`;
+  const stackHtml = stack.length && isStackShow !== false ? `<div class="tab-tbl-stack">${stack.map((s) => chip(s, 'accent')).join('')}</div>` : '';
   return `<div class="tab-item">
     <div class="tab-item-head">${titleHtml}${rolesHtml}${date ? `<span class="tab-item-date">${esc(date)}</span>` : ''}</div>
+    ${stackHtml}
     ${description ? `<p class="tab-item-summary">${description}</p>` : ''}
     ${highlights.length ? `<ul class="tab-highlights">${listItems(highlights)}</ul>` : ''}
   </div>`;

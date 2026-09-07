@@ -42,10 +42,10 @@ export function render(r: Resume, lang: Lang): string {
     }).join('')}</div>`);
   }
   if ((r.work || []).length) {
-    h += pureSection(L.work, r.work.map((w) => pureItem(esc(w.company), dateRange(w.startDate, w.endDate), w.summary, w.highlights, w.position ? [w.position] : [], w.stack || [], L.stack)).join(''));
+    h += pureSection(L.work, r.work.map((w) => pureItem(esc(w.company), dateRange(w.startDate, w.endDate), w.summary, w.highlights, w.position ? [w.position] : [], w.stack || [], w.isStackShow)).join(''));
   }
   if ((r.projects || []).length) {
-    h += pureSection(L.projects, r.projects.map((p) => pureItem(esc(p.name), dateRange(p.startDate, p.endDate), p.description, p.highlights, p.roles || [])).join(''));
+    h += pureSection(L.projects, r.projects.map((p) => pureItem(esc(p.name), dateRange(p.startDate, p.endDate), p.description, p.highlights, p.roles || [], p.stack || [], p.isStackShow)).join(''));
   }
   if ((r.education || []).length) {
     h += pureSection(L.education, r.education.map((e) => pureItem(esc(e.institution), dateRange(e.startDate, e.endDate), [e.studyType, e.area, e.score].filter(Boolean).join(' · '), [])).join(''));
@@ -68,9 +68,9 @@ function pureSection(title: string, inner: string): string {
   return `<section class="pure-section"><h2 class="pure-section-title">${esc(title)}</h2>${inner}</section>`;
 }
 
-function pureItem(title: string, date: string, summary: string, highlights: string[] = [], roles: string[] = [], stack: string[] = [], stackLabel: string = ''): string {
+function pureItem(title: string, date: string, summary: string, highlights: string[] = [], roles: string[] = [], stack: string[] = [], isStackShow?: boolean): string {
   const rolesHtml = roles.length ? `<span class="pure-item-roles">${roles.map((rl) => chip(rl, 'plain')).join('')}</span>` : '';
-  const stackHtml = stack.length && stackLabel ? `<div class="pure-item-stack"><span class="pure-item-stack-label">${esc(stackLabel)}：</span>${esc(stack.join(', '))}</div>` : '';
+  const stackHtml = stack.length && isStackShow !== false ? `<div class="pure-item-stack">${stack.map((s) => chip(s, 'accent')).join('')}</div>` : '';
   return `<div class="pure-item">
     <div class="pure-item-head"><span class="pure-item-title">${title}</span>${rolesHtml}${date ? `<span class="pure-item-date">${esc(date)}</span>` : ''}</div>
     ${stackHtml}

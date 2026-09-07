@@ -53,11 +53,11 @@ export function render(r: Resume, lang: Lang): string {
   }
 
   if ((r.work || []).length) {
-    main += modSection(L.work, 'briefcase', r.work.map((w) => modItem(esc(w.company), dateRange(w.startDate, w.endDate), w.summary, w.highlights, w.position ? [w.position] : [], w.stack || [], L.stack)).join(''));
+    main += modSection(L.work, 'briefcase', r.work.map((w) => modItem(esc(w.company), dateRange(w.startDate, w.endDate), w.summary, w.highlights, w.position ? [w.position] : [], w.stack || [], w.isStackShow)).join(''));
   }
 
   if ((r.projects || []).length) {
-    main += modSection(L.projects, 'folder', r.projects.map((p) => modItem(esc(p.name), dateRange(p.startDate, p.endDate), p.description, p.highlights, p.roles || [])).join(''));
+    main += modSection(L.projects, 'folder', r.projects.map((p) => modItem(esc(p.name), dateRange(p.startDate, p.endDate), p.description, p.highlights, p.roles || [], p.stack || [], p.isStackShow)).join(''));
   }
 
   if ((r.education || []).length) {
@@ -82,9 +82,9 @@ function modSection(title: string, ic: Parameters<typeof icon>[0], inner: string
   return `<section class="mod-block"><h2 class="mod-title">${icon(ic)}<span>${esc(title)}</span></h2>${inner}</section>`;
 }
 
-function modItem(title: string, date: string, summary: string, highlights: string[] = [], roles: string[] = [], stack: string[] = [], stackLabel: string = ''): string {
+function modItem(title: string, date: string, summary: string, highlights: string[] = [], roles: string[] = [], stack: string[] = [], isStackShow?: boolean): string {
   const rolesHtml = roles.length ? `<span class="mod-item-roles">${roles.map((rl) => chip(rl, 'accent')).join('')}</span>` : '';
-  const stackHtml = stack.length && stackLabel ? `<div class="mod-item-stack"><span class="mod-item-stack-label">${esc(stackLabel)}：</span>${esc(stack.join(', '))}</div>` : '';
+  const stackHtml = stack.length && isStackShow !== false ? `<div class="mod-item-stack">${stack.map((s) => chip(s, 'accent')).join('')}</div>` : '';
   return `<div class="mod-item">
     <div class="mod-item-head"><span class="mod-item-title">${title}</span>${rolesHtml}${date ? `<span class="mod-item-date pill">${esc(date)}</span>` : ''}</div>
     ${stackHtml}

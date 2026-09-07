@@ -29,7 +29,8 @@ export const sampleDoc: ResumeDoc = {
         endDate: '至今',
         summary: '负责中台前端架构与组件体系建设。',
         highlights: ['重构构建系统，构建提速 40%', '搭建组件库，覆盖 30+ 业务页面'],
-        stack: ['React', 'TypeScript', 'Vite', 'Node.js']
+        stack: ['React', 'TypeScript', 'Vite', 'Node.js'],
+        isStackShow: true
       },
       {
         company: '某创业公司',
@@ -38,7 +39,8 @@ export const sampleDoc: ResumeDoc = {
         endDate: '2021-12',
         summary: '负责核心产品 Web 端开发。',
         highlights: ['主导性能优化，首屏时间从 3.2s 降至 1.4s'],
-        stack: ['Vue', 'JavaScript', 'Webpack']
+        stack: ['Vue', 'JavaScript', 'Webpack'],
+        isStackShow: true
       }
     ],
     education: [
@@ -63,7 +65,9 @@ export const sampleDoc: ResumeDoc = {
         startDate: '2024-01',
         endDate: '2024-06',
         highlights: ['实现多语言编辑与 localStorage 持久化', '支持三套模板与主题色切换'],
-        roles: ['前端负责人', '架构设计']
+        roles: ['前端负责人', '架构设计'],
+        stack: ['TypeScript', 'Vite', 'CodeMirror'],
+        isStackShow: true
       },
       {
         name: '组件库 Pro',
@@ -72,7 +76,9 @@ export const sampleDoc: ResumeDoc = {
         startDate: '2022-09',
         endDate: '2023-05',
         highlights: ['按需加载，首屏体积减少 60%', '文档站点与可视化 Playground'],
-        roles: ['核心开发']
+        roles: ['核心开发'],
+        stack: ['React', 'TypeScript', 'Rollup'],
+        isStackShow: true
       }
     ],
     awards: [{ title: '年度最佳员工', date: '2023-12', awarder: '某科技公司', summary: '表彰年度突出贡献与团队协作' }],
@@ -117,7 +123,8 @@ export const sampleDoc: ResumeDoc = {
         endDate: 'Present',
         summary: 'Lead mid-platform frontend architecture and component system.',
         highlights: ['Refactored build system, 40% faster builds', 'Built component library covering 30+ pages'],
-        stack: ['React', 'TypeScript', 'Vite', 'Node.js']
+        stack: ['React', 'TypeScript', 'Vite', 'Node.js'],
+        isStackShow: true
       },
       {
         company: 'Some Startup',
@@ -126,7 +133,8 @@ export const sampleDoc: ResumeDoc = {
         endDate: '2021-12',
         summary: 'Developed the core product web client.',
         highlights: ['Led performance optimization, cutting first paint from 3.2s to 1.4s'],
-        stack: ['Vue', 'JavaScript', 'Webpack']
+        stack: ['Vue', 'JavaScript', 'Webpack'],
+        isStackShow: true
       }
     ],
     education: [
@@ -151,7 +159,9 @@ export const sampleDoc: ResumeDoc = {
         startDate: '2024-01',
         endDate: '2024-06',
         highlights: ['Multilingual editing with localStorage persistence', 'Three templates with theme color switching'],
-        roles: ['Frontend Lead', 'Architecture']
+        roles: ['Frontend Lead', 'Architecture'],
+        stack: ['TypeScript', 'Vite', 'CodeMirror'],
+        isStackShow: true
       },
       {
         name: 'UI Pro',
@@ -160,7 +170,9 @@ export const sampleDoc: ResumeDoc = {
         startDate: '2022-09',
         endDate: '2023-05',
         highlights: ['On-demand loading, 60% smaller first-screen bundle', 'Docs site with visual Playground'],
-        roles: ['Core Developer']
+        roles: ['Core Developer'],
+        stack: ['React', 'TypeScript', 'Rollup'],
+        isStackShow: true
       }
     ],
     awards: [{ title: 'Employee of the Year', date: '2023-12', awarder: 'Some Tech Co.', summary: 'Recognized for outstanding contribution and teamwork' }],

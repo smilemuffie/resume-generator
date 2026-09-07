@@ -36,6 +36,7 @@ export interface Work {
   summary: string;
   highlights: string[];
   stack?: string[];
+  isStackShow?: boolean;
 }
 
 export interface Education {
@@ -61,6 +62,8 @@ export interface Project {
   endDate: string;
   highlights: string[];
   roles?: string[];
+  stack?: string[];
+  isStackShow?: boolean;
 }
 
 export interface Award {

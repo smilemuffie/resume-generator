@@ -238,13 +238,10 @@
   margin: 3px 0 2px;
 }
 .r-item-stack {
-  font-size: 12.5px;
-  font-weight: 600;
-  color: #4a5260;
-  margin: 2px 0 0;
-}
-.r-item-stack-label {
-  color: var(--accent);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 6px 0 0;
 }
 .r-highlights {
   list-style: none;
@@ -501,13 +498,10 @@
   margin: 3px 0 2px;
 }
 .mod-item-stack {
-  font-size: 12.5px;
-  font-weight: 600;
-  color: #4b5563;
-  margin: 2px 0 0;
-}
-.mod-item-stack-label {
-  color: var(--accent);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 6px 0 0;
 }
 .mod-highlights {
   list-style: none;
@@ -668,13 +662,10 @@
   margin: 3px 0 2px;
 }
 .min-item-stack {
-  font-size: 12.5px;
-  font-weight: 600;
-  color: #4b5563;
-  margin: 2px 0 0;
-}
-.min-item-stack-label {
-  color: var(--accent);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 6px 0 0;
 }
 .min-highlights {
   list-style: none;
@@ -858,13 +849,10 @@
   margin: 3px 0 2px;
 }
 .pure-item-stack {
-  font-size: 12.5px;
-  font-weight: 600;
-  color: #4b5563;
-  margin: 2px 0 0;
-}
-.pure-item-stack-label {
-  color: var(--accent);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 6px 0 0;
 }
 /* 列表项以数字编号呈现：1. 2. 3. */
 .pure-highlights {
@@ -1146,13 +1134,10 @@
   font-variant-numeric: tabular-nums;
 }
 .tab-tbl-stack {
-  font-size: 12px;
-  font-weight: 600;
-  color: #4b5563;
-  line-height: 1.5;
-}
-.tab-tbl-stack-label {
-  color: var(--accent);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 4px 0 0;
 }
 .tab-tbl-summary {
   font-size: 12.5px;
