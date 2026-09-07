@@ -217,6 +217,13 @@ body {
 .pane-action.is-copied {
   color: #0f766e;
 }
+/* copy：蓝；clean：红；export：绿 */
+#copy-btn { color: #2563eb; }
+#copy-btn:hover { background: #e8f0fe; color: #1d4ed8; }
+#clear-btn { color: #dc2626; }
+#clear-btn:hover { background: #fde8e8; color: #b91c1c; }
+#export-json-btn { color: #0f766e; }
+#export-json-btn:hover { background: #e6f4f1; color: #0c5d56; }
 .pane-actions {
   display: inline-flex;
   align-items: center;
@@ -387,4 +394,50 @@ body {
 }
 .modal-confirm:hover {
   background: #c0210f;
+}
+/* 配置弹窗：头部 + 关闭按钮 + 复选项 */
+.modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.modal-close {
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: #8a9099;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.15s, color 0.15s;
+}
+.modal-close:hover {
+  background: #f2f3f5;
+  color: #1f2329;
+}
+.modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.cfg-field {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #1f2329;
+  cursor: pointer;
+  user-select: none;
+}
+.cfg-field input[type='checkbox'] {
+  width: 15px;
+  height: 15px;
+  accent-color: #2563eb;
+  cursor: pointer;
 }

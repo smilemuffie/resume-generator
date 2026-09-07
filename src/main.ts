@@ -4,6 +4,7 @@ import './styles/print.css';
 
 import { sampleDoc } from './sample-resume';
 import { loadColors, loadDoc, loadLang, loadTemplate } from './storage';
+import { getConfig, setConfig } from './config';
 import {
   getState,
   initStore,
@@ -62,6 +63,35 @@ function bootstrap(): void {
   helpBtn?.addEventListener('click', () => {
     window.open('docs/readme.html', '_blank', 'noopener,noreferrer');
   });
+
+  // 预览配置弹窗：控制 work/project 技术栈展示
+  const settingsBtn = document.querySelector<HTMLButtonElement>('#settings-btn');
+  const settingsModal = document.querySelector<HTMLElement>('#settings-modal');
+  const settingsClose = document.querySelector<HTMLButtonElement>('#settings-close');
+  const cfgWorkStack = document.querySelector<HTMLInputElement>('#cfg-work-stack');
+  const cfgProjectStack = document.querySelector<HTMLInputElement>('#cfg-project-stack');
+  const hideSettings = () => settingsModal?.classList.remove('is-visible');
+  const syncCfgUI = () => {
+    const c = getConfig();
+    if (cfgWorkStack) cfgWorkStack.checked = c.showWorkStack;
+    if (cfgProjectStack) cfgProjectStack.checked = c.showProjectStack;
+  };
+  syncCfgUI();
+  if (settingsBtn && settingsModal) {
+    settingsBtn.addEventListener('click', () => {
+      syncCfgUI();
+      settingsModal.classList.add('is-visible');
+    });
+    settingsClose?.addEventListener('click', hideSettings);
+    settingsModal.addEventListener('click', (e) => {
+      if (e.target === settingsModal) hideSettings();
+    });
+    cfgWorkStack?.addEventListener('change', () => setConfig({ showWorkStack: cfgWorkStack.checked }));
+    cfgProjectStack?.addEventListener('change', () => setConfig({ showProjectStack: cfgProjectStack.checked }));
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && settingsModal.classList.contains('is-visible')) hideSettings();
+    });
+  }
 
   // 复制编辑器内容到剪贴板
   const copyBtn = document.querySelector<HTMLButtonElement>('#copy-btn');

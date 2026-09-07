@@ -1,5 +1,6 @@
 import { getState, getResume, subscribe } from '../store';
 import { getThemePair } from '../theme';
+import { getConfig, subscribeConfig } from '../config';
 import type { Lang, Resume, TemplateId } from '../types';
 import { render as renderBasic } from './templates/basic';
 import { render as renderModern } from './templates/modern';
@@ -36,7 +37,19 @@ export function initRenderer(container: HTMLElement): void {
   const draw = () => {
     const s = getState();
     const fn = TEMPLATES[s.template];
-    const html = fn(getResume(), s.lang);
+    const cfg = getConfig();
+    // 配置覆盖：取消勾选时，强制隐藏对应区块的技术栈 tag
+    const src = getResume();
+    const r: Resume = {
+      ...src,
+      work: cfg.showWorkStack
+        ? src.work
+        : src.work.map((w) => ({ ...w, isStackShow: false })),
+      projects: cfg.showProjectStack
+        ? src.projects
+        : src.projects.map((p) => ({ ...p, isStackShow: false }))
+    };
+    const html = fn(r, s.lang);
     const pages = paginate(html, s.template);
     container.innerHTML = pages
       .map((p) => `<div class="resume-page">${p}</div>`)
@@ -53,6 +66,7 @@ export function initRenderer(container: HTMLElement): void {
   draw();
   updateScale();
   subscribe(draw);
+  subscribeConfig(draw);
 
   // 容器尺寸变化时重新计算缩放
   const ro = new ResizeObserver(updateScale);
