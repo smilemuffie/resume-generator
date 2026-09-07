@@ -1,5 +1,5 @@
 import type { Lang, Resume } from '../../types';
-import { ageLabel, chip, dateRange, esc, icon, LABELS, listItems } from './util';
+import { ageLabel, chip, dateRange, esc, icon, LABELS, listItems, resolveDescription } from './util';
 
 // 表格模板：单栏，工作经历以 2 列表格展示（左：公司/职位/日期，右：summary + highlights）
 export function render(r: Resume, lang: Lang): string {
@@ -69,7 +69,7 @@ export function render(r: Resume, lang: Lang): string {
 
   // 项目经历
   if ((r.projects || []).length) {
-    h += tabSection(L.projects, r.projects.map((p) => tabProjectItem(p.name, p.url, dateRange(p.startDate, p.endDate), p.description, p.highlights, p.roles || [], p.stack || [], p.isStackShow)).join(''), icon('folder'));
+    h += tabSection(L.projects, r.projects.map((p) => tabProjectItem(p.name, p.url, dateRange(p.startDate, p.endDate), resolveDescription(p.description, p.stack || []), p.highlights, p.roles || [], p.stack || [], p.isStackShow)).join(''), icon('folder'), 'projects');
   }
 
   // 教育

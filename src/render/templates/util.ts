@@ -135,6 +135,16 @@ export function icon(name: IconName): string {
   return `<svg class="icn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON_PATHS[name]}</svg>`;
 }
 
+// 项目描述占位替换：将 description 中的 {{stack}} 替换为 stack 数组以 ' + ' 连接的字符串
+// 仅在 description 含 {{stack}} 且 stack 非空时替换，否则原样返回
+export function resolveDescription(description: string, stack: string[] = []): string {
+  const desc = description || '';
+  if (!desc.includes('{{stack}}')) return desc;
+  if (!stack || stack.length === 0) return desc.replace(/\{\{stack\}\}/g, '');
+  const joined = stack.join(' + ');
+  return desc.replace(/\{\{stack\}\}/g, `<b>${joined}</b>`);
+}
+
 // chip 徽章：accent=强调色描边淡底，plain=灰描边
 export function chip(text: string, variant: 'accent' | 'plain' = 'plain'): string {
   return `<span class="chip chip--${variant}">${esc(text)}</span>`;

@@ -1,5 +1,5 @@
 import type { Lang, Resume } from '../../types';
-import { ageLabel, chip, dateRange, esc, icon, LABELS, listItems } from './util';
+import { ageLabel, chip, dateRange, esc, icon, LABELS, listItems, resolveDescription } from './util';
 
 // 基础模板：单栏衬线，传统专业风（钢蓝强调色）
 export function render(r: Resume, lang: Lang): string {
@@ -52,7 +52,7 @@ export function render(r: Resume, lang: Lang): string {
     h += section(L.projects, 'folder', r.projects.map((p) => item(
       esc(p.name),
       dateRange(p.startDate, p.endDate),
-      p.description,
+      resolveDescription(p.description, p.stack || []),
       p.highlights,
       p.roles || [],
       p.stack || [],

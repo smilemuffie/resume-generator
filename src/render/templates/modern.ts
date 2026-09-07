@@ -1,5 +1,5 @@
 import type { Lang, Resume } from '../../types';
-import { ageLabel, chip, dateRange, esc, icon, LABELS, listItems } from './util';
+import { ageLabel, chip, dateRange, esc, icon, LABELS, listItems, resolveDescription } from './util';
 
 // 现代模板：左 35% 深色渐变侧边栏 + 右 65% 主体（蓝色强调）
 export function render(r: Resume, lang: Lang): string {
@@ -57,7 +57,7 @@ export function render(r: Resume, lang: Lang): string {
   }
 
   if ((r.projects || []).length) {
-    main += modSection(L.projects, 'folder', r.projects.map((p) => modItem(esc(p.name), dateRange(p.startDate, p.endDate), p.description, p.highlights, p.roles || [], p.stack || [], p.isStackShow)).join(''));
+    main += modSection(L.projects, 'folder', r.projects.map((p) => modItem(esc(p.name), dateRange(p.startDate, p.endDate), resolveDescription(p.description, p.stack || []), p.highlights, p.roles || [], p.stack || [], p.isStackShow)).join(''), 'projects');
   }
 
   if ((r.education || []).length) {

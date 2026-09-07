@@ -1,5 +1,5 @@
 import type { Lang, Resume } from '../../types';
-import { ageLabel, chip, dateRange, esc, icon, LABELS, listItems } from './util';
+import { ageLabel, chip, dateRange, esc, icon, LABELS, listItems, resolveDescription } from './util';
 
 // 纯净模板：以 minimal 为蓝本，单栏无衬线，列表项以数字编号呈现
 export function render(r: Resume, lang: Lang): string {
@@ -45,7 +45,7 @@ export function render(r: Resume, lang: Lang): string {
     h += pureSection(L.work, r.work.map((w) => pureItem(esc(w.company), dateRange(w.startDate, w.endDate), w.summary, w.highlights, w.position ? [w.position] : [], w.stack || [], w.isStackShow)).join(''));
   }
   if ((r.projects || []).length) {
-    h += pureSection(L.projects, r.projects.map((p) => pureItem(esc(p.name), dateRange(p.startDate, p.endDate), p.description, p.highlights, p.roles || [], p.stack || [], p.isStackShow)).join(''));
+    h += pureSection(L.projects, r.projects.map((p) => pureItem(esc(p.name), dateRange(p.startDate, p.endDate), resolveDescription(p.description, p.stack || []), p.highlights, p.roles || [], p.stack || [], p.isStackShow)).join(''), 'projects');
   }
   if ((r.education || []).length) {
     h += pureSection(L.education, r.education.map((e) => pureItem(esc(e.institution), dateRange(e.startDate, e.endDate), [e.studyType, e.area, e.score].filter(Boolean).join(' · '), [])).join(''));
