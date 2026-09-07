@@ -70,18 +70,13 @@ export function render(r: Resume, lang: Lang): string {
   }
 
   if ((r.certificates || []).length) {
-    h += section(L.certificates, 'certificate', r.certificates.map((c) => item(
-      esc(c.name),
-      c.date,
-      [c.issuer, c.summary].filter(Boolean).join(' · '),
-      []
-    )).join(''));
+    h += section(L.certificates, 'certificate', `<div class="r-certs">${r.certificates.map((c) => chip(c.name, 'plain')).join('')}</div>`);
   }
 
   if ((r.skills || []).length) {
     h += section(L.skills, 'sparkles', `<div class="r-skills">${r.skills.map((s) => {
       const kws = (s.keywords || []).map((k) => chip(k, 'plain')).join('');
-      return `<div class="r-skill">${chip(s.name, 'accent')}${kws ? `<span class="r-skill-kws">${kws}</span>` : ''}</div>`;
+      return `<div class="r-skill"><span class="r-skill-label">${esc(s.name)}</span>${kws ? `<span class="r-skill-kws">${kws}</span>` : ''}</div>`;
     }).join('')}</div>`);
   }
 

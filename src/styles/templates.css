@@ -274,9 +274,15 @@
 }
 .r-skill {
   display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 4px;
+  align-items: baseline;
+  gap: 10px;
+}
+.r-skill-label {
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--accent);
+  flex-shrink: 0;
+  min-width: 3em;
 }
 .r-skill-kws {
   display: inline-flex;
@@ -285,7 +291,8 @@
   margin-left: 2px;
 }
 .r-langs,
-.r-interests {
+.r-interests,
+.r-certs {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -367,18 +374,21 @@
   color: var(--accent);
 }
 .mod-skill {
-  font-size: 12px;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
   margin-bottom: 9px;
 }
-.mod-skill-lv {
-  font-size: 10.5px;
-  color: var(--muted);
+.mod-skill-label {
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--accent);
+  flex-shrink: 0;
+  min-width: 3em;
 }
 .mod-skill-kws {
-  display: flex;
+  display: inline-flex;
   flex-wrap: wrap;
-  gap: 4px;
-  margin-top: 5px;
 }
 .mod-lang {
   display: flex;
@@ -395,6 +405,12 @@
   flex-wrap: wrap;
   align-items: center;
   gap: 4px;
+}
+.mod-chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
 }
 .mod-award {
   margin-bottom: 8px;
@@ -921,7 +937,6 @@
 /* 现代模板侧栏：浅底之下辅助色（原本 --muted 偏浅）整体加深一档 */
 .mod-sidebar .mod-label,
 .mod-sidebar .mod-contact-row,
-.mod-sidebar .mod-skill-lv,
 .mod-sidebar .mod-lang-flu,
 .mod-sidebar .mod-award-d {
   color: #334155;

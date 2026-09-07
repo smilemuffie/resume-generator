@@ -27,7 +27,7 @@ export function render(r: Resume, lang: Lang): string {
   if ((r.skills || []).length) {
     side += sideBlock(L.skills, 'sparkles', r.skills.map((s) => {
       const kws = (s.keywords || []).map((k) => chip(k, 'plain')).join('');
-      return `<div class="mod-skill">${chip(s.name, 'accent')}${s.level ? ` <span class="mod-skill-lv">${esc(s.level)}</span>` : ''}${kws ? `<div class="mod-skill-kws">${kws}</div>` : ''}</div>`;
+      return `<div class="mod-skill"><span class="mod-skill-label">${esc(s.name)}</span>${kws ? `<span class="mod-skill-kws">${kws}</span>` : ''}</div>`;
     }).join(''));
   }
 
@@ -65,7 +65,7 @@ export function render(r: Resume, lang: Lang): string {
   }
 
   if ((r.certificates || []).length) {
-    main += modSection(L.certificates, 'certificate', r.certificates.map((c) => modItem(esc(c.name), c.date, [c.issuer, c.summary].filter(Boolean).join(' · '), [])).join(''));
+    main += modSection(L.certificates, 'certificate', `<div class="mod-chips">${r.certificates.map((c) => chip(c.name, 'plain')).join('')}</div>`);
   }
 
   return `<div class="tpl tpl-modern">
